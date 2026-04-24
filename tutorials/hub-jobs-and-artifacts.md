@@ -5,7 +5,7 @@ others require an uploaded structure artifact first.
 
 ## Active Public Models
 
-The active public Hub model set currently documented by the SDK is:
+The active Hub model set currently documented by the SDK is:
 
 - `boltz2`
 - `boltzgen`
@@ -22,7 +22,7 @@ The active public Hub model set currently documented by the SDK is:
 
 Use `client.hub.submit(job_type="hub.<model>", payload={...})` for full active
 model coverage. Typed helpers exist for common models and remain thin wrappers
-over the public API routes.
+over the API routes.
 
 ## Sequence Job
 
@@ -91,14 +91,12 @@ url_info = client.jobs.get_artifact_url(
 print(url_info["download_url"])
 ```
 
-## CLI Pointer
+## CLI Option
 
-The CLI can inspect active Hub models and submit jobs:
+You can also inspect active Hub models and submit jobs from the CLI:
 
 ```bash
 omtx hub models
 omtx hub schema --engine boltz2
 omtx hub submit --job-type hub.boltz2 --payload-file payload.json --wait
 ```
-
-CLI source and packaging stay in `vibe-discovery`.

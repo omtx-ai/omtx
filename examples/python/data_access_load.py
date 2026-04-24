@@ -1,4 +1,4 @@
-"""Load binder and non-binder pools with the public Python SDK."""
+"""Load binder and non-binder pools with the Python SDK."""
 
 from __future__ import annotations
 

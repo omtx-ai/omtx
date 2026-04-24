@@ -1,7 +1,7 @@
 # Python SDK Quickstart
 
-The public Python package is `omtx`. Source code, package metadata, tests, and
-release tooling remain in `vibe-discovery`.
+Use the `omtx` Python package to call the Om API from notebooks, scripts, and
+training workflows.
 
 ## Install
 
@@ -9,7 +9,7 @@ release tooling remain in `vibe-discovery`.
 pip install omtx
 ```
 
-Set your API key:
+Set your API key before creating a client:
 
 ```bash
 export OMTX_API_KEY="your-api-key"
@@ -32,7 +32,7 @@ with OmClient() as client:
 
 ## Data Access
 
-Use `protein_uuid` for public data access. The API resolves the latest
+Use `protein_uuid` for data access. The API resolves the latest
 accessible dataset snapshot server-side.
 
 ```python
@@ -92,8 +92,8 @@ For result-specific detail routes, `client.jobs.wait(...)` also supports a
 
 ## Hub Job
 
-For active Hub models, use `client.hub.submit(...)` for full model coverage or a
-typed helper when one exists.
+For active Hub models, use `client.hub.submit(...)` or a typed helper when one
+exists.
 
 ```python
 from omtx import OmClient

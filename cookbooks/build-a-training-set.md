@@ -46,4 +46,4 @@ print("Dataset:", metadata["export"].get("dataset_id"))
 
 - Inspect columns with `binders.columns`.
 - Preview molecules with `binders.show(top_n=24)`.
-- Save local derived files outside git-tracked paths.
+- Save derived files in your own working directory.

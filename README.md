@@ -1,74 +1,50 @@
 # omtx
 
-Open source home for OMTX quick starts, tutorials, cookbooks, and public
-examples.
+Quick starts, tutorials, cookbooks, and runnable examples for using OMTX.
 
-This repository is connected to git at
-`https://github.com/omtx-ai/omtx.git`. At audit start it contained only this
-README and the Apache 2.0 license, so its immediate job is to define a clean
-public boundary before tutorials, cookbooks, or examples are rewritten from the
-larger private repos.
+Use these guides to learn the Om API, work with the `omtx` Python SDK, run
+data-access workflows, launch diligence jobs, and use Hub models and artifacts.
 
-## Purpose
+## Start Here
 
-Use this repo for material that can be public, useful, and maintained outside
-the private product monorepos:
-
-- quick starts for public OMTX API, SDK, and CLI workflows
-- tutorials that teach one workflow at a time
-- cookbooks for high-value applied use cases
-- runnable examples for public OMTX workflows
-- contribution guidance for docs and cookbook changes
-
-Do not use this repo as a mirror of internal infrastructure, customer-facing
-application code, private notebooks, local environment files, service account
-keys, generated customer data, or operational runbooks that assume private
-systems. Do not use this repo for SDK or CLI source; that remains in
-`vibe-discovery`.
-
-## Source Repos Reviewed
-
-- `vibe-discovery`: canonical repo for the VIBE discovery CLI and Om Python SDK.
-- `om-external`: private customer-facing product monorepo for frontend, backend,
-  schemas, docs, payments, Hub, MCPs, and marketing/customer workflows.
-- `om-internal`: private internal services, data pipelines, infra, notebooks,
-  jobs, and internal engineering docs.
-
-Internal planning and repo guidance lives under ignored `docs/**`.
-
-## Public Content
-
-- [Quick Start](quick-start/README.md): general setup and first successful API,
-  SDK, and CLI workflows.
-- [Tutorials](tutorials/README.md): teaching walkthroughs for data access,
+- [Quick Start](quick-start/README.md): first successful API, SDK, and CLI
+  workflows.
+- [Tutorials](tutorials/README.md): step-by-step walkthroughs for data access,
   diligence jobs, and Hub artifact jobs.
-- [Cookbooks](cookbooks/README.md): high-value applied recipes.
-- [Examples](examples/python): runnable Python examples.
+- [Cookbooks](cookbooks/README.md): applied recipes for common research and
+  modeling tasks.
+- [Examples](examples/python): runnable Python scripts.
 
-## Suggested Shape
+## What You Can Do
 
-```text
-quick-start/
-  README.md
-  api.md
-  sdk.md
-  cli.md
-tutorials/
-  README.md
-  data-access-python-workflows.md
-  diligence-jobs.md
-  hub-jobs-and-artifacts.md
-cookbooks/
-  README.md
-  ...
-examples/
-  python/
-  notebooks/
-  data/
-docs/
-  ...
+- Query the Om API from curl, scripts, and notebooks.
+- Install and use the `omtx` Python SDK.
+- Load binder and non-binder datasets for accessible proteins.
+- Submit diligence jobs and poll results.
+- Upload artifacts, launch Hub jobs, and retrieve outputs.
+- Use idempotency keys for safe retries.
+
+## Prerequisites
+
+- An OMTX API key.
+- Python 3.9+ for SDK examples.
+- `pip install omtx` for Python workflows.
+
+Keep API keys in environment variables:
+
+```bash
+export OMTX_API_KEY="your-api-key"
 ```
 
-`docs/**` is ignored and reserved for local repo guidance, planning notes,
-style rules, and private working checklists. Public-facing material belongs in
-`quick-start/`, `tutorials/`, `cookbooks/`, and `examples/`.
+## Choose A Path
+
+- New to OMTX: start with [API Quickstart](quick-start/api.md) or
+  [Python SDK Quickstart](quick-start/sdk.md).
+- Loading datasets: follow
+  [Data Access Python Workflows](tutorials/data-access-python-workflows.md), then
+  use [Build A Training Set](cookbooks/build-a-training-set.md).
+- Running diligence: follow [Diligence Jobs](tutorials/diligence-jobs.md), then
+  use [Diligence Briefing](cookbooks/diligence-briefing.md).
+- Running Hub jobs: follow
+  [Hub Jobs And Artifacts](tutorials/hub-jobs-and-artifacts.md), then use
+  [Hub Artifact Workflow](cookbooks/hub-artifact-workflow.md).

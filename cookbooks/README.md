@@ -1,10 +1,9 @@
 # Cookbooks
 
-Cookbooks are high-value applied recipes. They assume the reader already knows
-the basics and wants a focused way to accomplish a specific job.
+Cookbooks are applied recipes for completing specific OMTX tasks.
 
-Cookbooks may use the public `omtx` Python SDK, Om API, or `omtx` CLI, but
-source code for those tools stays in `vibe-discovery`.
+Cookbooks use the `omtx` Python SDK, Om API, or `omtx` CLI to complete practical
+research and modeling tasks.
 
 ## Tracks
 
@@ -13,7 +12,7 @@ source code for those tools stays in `vibe-discovery`.
 - Hub: run artifact-backed modeling workflows and retrieve outputs.
 - CLI: inspect jobs and structures from a local command line.
 
-## Planned Recipes
+## Recipes
 
 - `build-a-training-set.md`: load binders/non-binders and prepare a local
   training dataset.
@@ -22,10 +21,10 @@ source code for those tools stays in `vibe-discovery`.
 - `hub-artifact-workflow.md`: upload a structure, launch a Hub job, and retrieve
   output artifacts.
 
-## Rules
+## Best Practices
 
-- Use synthetic or explicitly public data.
+- Use example inputs or data you have permission to access.
 - Target `https://api.omtx.ai`.
 - Keep secrets in environment variables only.
 - Include idempotency keys for retryable POST examples.
-- Strip notebook outputs before committing.
+- Keep generated outputs in your own working directory.

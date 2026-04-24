@@ -16,7 +16,7 @@ client.diligence.list_gene_keys()
 ```
 
 `search` accepts `query` only. `gather`, `crawl`, and `deep_diligence` accept an
-optional public preset.
+optional preset.
 
 ## Search Example
 

@@ -1,15 +1,16 @@
 # API Quickstart
 
-Use the Om API from scripts, notebooks, or service integrations with an API key.
+Use the Om API from scripts, notebooks, or service integrations with your API
+key.
 The production API base URL is:
 
 ```text
 https://api.omtx.ai
 ```
 
-## Setup
+## Set Your API Key
 
-Keep keys out of source control:
+Keep keys in environment variables:
 
 ```bash
 export OMTX_API_KEY="your-api-key"
@@ -17,13 +18,13 @@ export OMTX_API_KEY="your-api-key"
 
 ## Health Check
 
-`GET /v2/health` is the simplest smoke check.
+Use `GET /v2/health` to confirm the API is reachable.
 
 ```bash
 curl https://api.omtx.ai/v2/health
 ```
 
-Most other routes require authentication:
+Most other routes require your API key:
 
 ```bash
 curl https://api.omtx.ai/v2/datasets/catalog \
@@ -58,8 +59,3 @@ curl -X POST https://api.omtx.ai/v2/data-access/shards \
 | `POST /v2/hub/<model>/start` | Start an active Hub model job. |
 | `GET /v2/jobs/{job_id}` | Read job status. |
 | `GET /v2/jobs/history` | Page through recent jobs. |
-
-## Source Ownership
-
-The SDK and CLI source code lives in `vibe-discovery`. This repo only documents
-public usage patterns and cookbooks.

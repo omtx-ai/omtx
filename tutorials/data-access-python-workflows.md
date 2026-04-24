@@ -3,11 +3,11 @@
 Use the Python SDK when you want binder and non-binder data in notebooks,
 scripts, or training workflows.
 
-## Contract
+## How Data Access Works
 
 - Public data-access requests use `protein_uuid`.
 - The Om API resolves the latest accessible dataset snapshot server-side.
-- Customers do not select `vintage_number` for public shard access.
+- You do not need to select `vintage_number` for shard access.
 - Entitlement is enforced by the API. Missing access can return `402`.
 - SDK sampling happens after shard URLs are retrieved.
 

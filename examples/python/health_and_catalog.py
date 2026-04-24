@@ -1,4 +1,4 @@
-"""Minimal Om API health and catalog example using the public Python SDK."""
+"""Minimal Om API health and catalog example using the Python SDK."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Submit and poll a diligence search job with the public Python SDK."""
+"""Submit and poll a diligence search job with the Python SDK."""
 
 from __future__ import annotations
 

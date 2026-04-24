@@ -1,7 +1,7 @@
 # Tutorials
 
-Tutorials are teaching walkthroughs. They explain a workflow step by step and
-show how the pieces fit together.
+Tutorials explain OMTX workflows step by step and show how the pieces fit
+together.
 
 Use this section when you want to learn a workflow, not just copy a final
 recipe.
@@ -15,9 +15,9 @@ recipe.
 - [Hub Jobs And Artifacts](hub-jobs-and-artifacts.md): upload artifacts, launch
   active Hub jobs, poll results, and request signed artifact URLs.
 
-## Tutorial Rules
+## Best Practices
 
 - Teach one workflow at a time.
-- Prefer production endpoints and current public SDK methods.
-- Use synthetic or explicitly public data.
-- Keep private infrastructure and internal service details out.
+- Use production endpoints and current SDK methods.
+- Use example inputs or data you have permission to access.
+- Keep the focus on customer workflows and results.
