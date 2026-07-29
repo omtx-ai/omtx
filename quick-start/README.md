@@ -11,5 +11,8 @@ or CLI command.
   catalog request, and idempotency.
 - [Python SDK Quickstart](sdk.md): install `omtx`, create `OmClient`, query
   health/catalog, load data, and submit a job.
-- [CLI Quickstart](cli.md): run `omtx doctor`, inspect available workflows, submit
-  Hub jobs, upload artifacts, and manage PyMOL sessions.
+- [CLI Quickstart](cli.md): download, verify, and score locally with the public
+  LULA-1 CLI commands.
+- [Local LULA-1 Quickstart](lula.md): install `omtx[lula]>=2.0.12`, download
+  public Hugging Face weights, verify hashes, and score protein-sequence plus
+  SMILES pairs locally.

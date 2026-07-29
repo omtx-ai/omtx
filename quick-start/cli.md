@@ -1,72 +1,46 @@
 # CLI Quickstart
 
-Use the `omtx` command for local checks, Hub job submission, artifact handling,
-and PyMOL-backed structure workflows.
+Use the `omtx` command for local open-weight LULA-1 workflows.
 
 ## Setup
 
-The CLI uses `OMTX_API_KEY` for authenticated API workflows.
+Install the public package with the LULA extra:
 
 ```bash
-export OMTX_API_KEY="your-api-key"
+pip install "omtx[lula]>=2.0.12"
 ```
 
-Check your local setup:
+No OMTX API key or Hugging Face login is required for local LULA-1 scoring.
 
-```bash
-omtx doctor
-```
+For API, hosted scoring, Hub jobs, and artifact workflows, use the Python SDK
+or direct API quickstarts.
 
 ## Command Families
 
 | Command | Purpose |
 | --- | --- |
-| `omtx doctor` | Check local CLI prerequisites. |
-| `omtx sdk surface` | Inspect available SDK namespaces and operations. |
-| `omtx sdk schema` | Inspect one SDK operation schema. |
-| `omtx hub models` | List active Hub model specs from the local SDK. |
-| `omtx hub schema` | Inspect one Hub model schema. |
-| `omtx hub submit` | Submit a `hub.<model>` job. |
-| `omtx hub status` | Fetch a job status by job ID. |
-| `omtx hub wait` | Poll a job until terminal state. |
-| `omtx hub history` | List recent jobs. |
-| `omtx artifacts upload` | Upload a local file as an Om artifact. |
-| `omtx workflow ...` | Run higher-level structure workflows on top of SDK and local PyMOL. |
-| `omtx pymol ...` | Manage a local PyMOL session. |
+| `omtx lula download` | Download public LULA-1 weights and required encoders. |
+| `omtx lula verify` | Verify LULA-1 model files against the release manifest. |
+| `omtx lula score` | Score protein-sequence plus SMILES pairs locally. |
 
-## Hub Submit Example
+## Download And Verify
 
 ```bash
-omtx hub submit \
-  --job-type hub.boltz2 \
-  --payload-json '{"protein_sequence":"MSTNPKPQRKTKRNTNRRPQDVKFPGG","ligand_smiles":"CCO"}' \
-  --idempotency-key hub-boltz2-cli-demo-001 \
-  --wait
+omtx lula download
+omtx lula verify
 ```
 
-## Artifact Upload Example
+## Score Example
 
 ```bash
-omtx artifacts upload --file target.pdb
+omtx lula score \
+  --protein protein.fasta \
+  --smiles molecules.smi \
+  --out scores.csv
 ```
 
-Use `--signed-url` for the signed upload flow when appropriate:
+`protein.fasta` may be a FASTA/text file or an inline amino-acid sequence.
+`molecules.smi` may be a SMILES file or an inline SMILES string.
 
-```bash
-omtx artifacts upload --file target.cif --signed-url
-```
-
-## PyMOL Session Flow
-
-Session-bound PyMOL commands require a session created under the same
-`OMTX_HOME`.
-
-```bash
-export OMTX_HOME=/tmp/omtx-cli-demo
-
-omtx pymol open --replace-session
-omtx pymol status
-omtx pymol close
-```
-
-Use the `omtx` command for end-to-end workflow checks.
+See [Local LULA-1 Quickstart](lula.md) for the Python API, expected fields, and
+Hugging Face model link.

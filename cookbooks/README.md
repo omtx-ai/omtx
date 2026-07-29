@@ -10,7 +10,7 @@ research and modeling tasks.
 - Data access: build training-ready binder/non-binder datasets.
 - Diligence: turn a question into a compact evidence briefing.
 - Hub: run artifact-backed modeling workflows and retrieve outputs.
-- CLI: inspect jobs and structures from a local command line.
+- CLI: run local open-weight LULA-1 scoring.
 
 ## Recipes
 

@@ -3,7 +3,8 @@
 Quick starts, tutorials, cookbooks, and runnable examples for using OMTX.
 
 Use these guides to learn the Om API, work with the `omtx` Python SDK, run
-data-access workflows, launch diligence jobs, and use Hub models and artifacts.
+data-access workflows, launch diligence jobs, use Hub models and artifacts, and
+run local open-weight LULA-1 scoring.
 
 ## Start Here
 
@@ -22,13 +23,15 @@ data-access workflows, launch diligence jobs, and use Hub models and artifacts.
 - Load binder and non-binder datasets for accessible proteins.
 - Submit diligence jobs and poll results.
 - Upload artifacts, launch Hub jobs, and retrieve outputs.
+- Score protein sequences and SMILES locally with open-weight LULA-1.
 - Use idempotency keys for safe retries.
 
 ## Prerequisites
 
-- An OMTX API key.
+- An OMTX API key for API, hosted, and Hub workflows.
 - Python 3.9+ for SDK examples.
 - `pip install omtx` for Python workflows.
+- `pip install "omtx[lula]>=2.0.12"` for local open-weight LULA-1 scoring.
 
 Keep API keys in environment variables:
 
@@ -40,6 +43,8 @@ export OMTX_API_KEY="your-api-key"
 
 - New to OMTX: start with [API Quickstart](quick-start/api.md) or
   [Python SDK Quickstart](quick-start/sdk.md).
+- Local LULA-1 scoring: follow
+  [Local LULA-1 Quickstart](quick-start/lula.md).
 - Loading datasets: follow
   [Data Access Python Workflows](tutorials/data-access-python-workflows.md), then
   use [Build A Training Set](cookbooks/build-a-training-set.md).

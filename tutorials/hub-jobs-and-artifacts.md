@@ -93,10 +93,6 @@ print(url_info["download_url"])
 
 ## CLI Option
 
-You can also inspect active Hub models and submit jobs from the CLI:
-
-```bash
-omtx hub models
-omtx hub schema --engine boltz2
-omtx hub submit --job-type hub.boltz2 --payload-file payload.json --wait
-```
+For command-line local scoring, see the
+[Local LULA-1 Quickstart](../quick-start/lula.md). For Hub jobs and artifacts,
+use the SDK flow above.

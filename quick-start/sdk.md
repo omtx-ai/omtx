@@ -9,6 +9,12 @@ training workflows.
 pip install omtx
 ```
 
+For local open-weight LULA-1 scoring:
+
+```bash
+pip install "omtx[lula]>=2.0.12"
+```
+
 Set your API key before creating a client:
 
 ```bash
@@ -113,3 +119,18 @@ with OmClient() as client:
 ```
 
 For artifact-backed workflows, upload files first with `client.artifacts.*`.
+
+## Local LULA-1
+
+Local LULA-1 scoring uses public Hugging Face weights and does not require an
+OMTX API key or Hugging Face login:
+
+```bash
+omtx lula download
+omtx lula verify
+```
+
+Then score protein-sequence plus SMILES pairs with `omtx lula score` or
+`from omtx.lula import load_model`.
+
+See [Local LULA-1 Quickstart](lula.md) for the full workflow.
