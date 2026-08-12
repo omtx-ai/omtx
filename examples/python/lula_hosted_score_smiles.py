@@ -10,6 +10,7 @@ Set:
 from __future__ import annotations
 
 from pathlib import Path
+from uuid import uuid4
 
 import polars as pl
 
@@ -41,8 +42,9 @@ def main() -> None:
             smiles=SMILES,
             threshold=1.0,
             top_k=len(SMILES),
-            idempotency_key="explicit-smiles-lula2-example-001",
+            idempotency_key=f"explicit-smiles-lula2-example-{uuid4()}",
         )
+        print("Launched job IDs:", ", ".join(launch["job_ids"]))
 
         result_dir = Path("outputs/explicit-smiles-lula2")
         artifact_paths = []
@@ -58,7 +60,7 @@ def main() -> None:
     tables = [
         pl.read_parquet(path)
         for path in artifact_paths
-        if path.suffix == ".parquet"
+        if path.name == "top_hits.parquet"
     ]
     score_rows = pl.concat(tables)
     score_name = score_column(score_rows)

@@ -54,6 +54,7 @@ def main() -> int:
                 top_k=args.top_k,
                 idempotency_key=f"lula2-om-space-{uuid4()}",
             )
+            print("Launched job IDs:", ", ".join(job["job_ids"]))
 
             result_dir = Path(args.output_dir)
             artifact_paths: list[Path] = []
@@ -71,12 +72,19 @@ def main() -> int:
             score_tables = [
                 pl.read_parquet(path)
                 for path in artifact_paths
-                if path.suffix == ".parquet"
+                if path.name == "top_hits.parquet"
             ]
             score_rows = pl.concat(score_tables)
             score_rows = score_rows.sort(score_column(score_rows), descending=True)
             selected_hits = score_rows.head(args.select).to_dicts()
             print(f"Selected {len(selected_hits)} hits")
+            for row in selected_hits[:10]:
+                score_name = score_column(score_rows)
+                print(
+                    round(float(row[score_name]), 4),
+                    row.get("customer_wallet_credits"),
+                    row["smiles"],
+                )
 
             if not args.place_order:
                 print("Dry run complete. Re-run with --place-order to create an order.")

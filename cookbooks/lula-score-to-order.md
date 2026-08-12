@@ -50,6 +50,7 @@ list you already have.
 
 ```python
 from pathlib import Path
+from uuid import uuid4
 
 import polars as pl
 from omtx import OmClient
@@ -76,7 +77,7 @@ with OmClient() as client:
         smiles=smiles,
         threshold=1.0,
         top_k=len(smiles),
-        idempotency_key="explicit-smiles-lula2-demo-001",
+        idempotency_key=f"explicit-smiles-lula2-{uuid4()}",
     )
 
     result_dir = Path("outputs/explicit-smiles-lula2")
@@ -93,7 +94,7 @@ with OmClient() as client:
 score_tables = [
     pl.read_parquet(path)
     for path in artifact_paths
-    if path.suffix == ".parquet"
+    if path.name == "top_hits.parquet"
 ]
 score_rows = pl.concat(score_tables)
 score_rows = score_rows.sort(score_column(score_rows), descending=True)
@@ -150,7 +151,7 @@ with OmClient() as client:
 score_tables = [
     pl.read_parquet(path)
     for path in artifact_paths
-    if path.suffix == ".parquet"
+    if path.name == "top_hits.parquet"
 ]
 score_rows = pl.concat(score_tables)
 score_rows = score_rows.sort(score_column(score_rows), descending=True)
