@@ -9,10 +9,10 @@ training workflows.
 pip install omtx
 ```
 
-For local open-weight LULA-1 scoring:
+For local open-weight LULA scoring:
 
 ```bash
-pip install "omtx[lula]>=2.0.12"
+pip install "omtx[lula]>=2.0.20"
 ```
 
 Set your API key before creating a client:
@@ -134,3 +134,36 @@ Then score protein-sequence plus SMILES pairs with `omtx lula score` or
 `from omtx.lula import load_model`.
 
 See [Local LULA-1 Quickstart](lula.md) for the full workflow.
+
+## LULA Score And Order
+
+Hosted LULA can score explicit SMILES or orderable Om Accessible Space
+molecules:
+
+```python
+from omtx import OmClient
+
+with OmClient() as client:
+    explicit = client.lula2.score(
+        protein_sequence=protein_sequence,
+        smiles=["CCO", "Cc1ccc(cc1)S(=O)(=O)N"],
+        idempotency_key="explicit-smiles-demo-001",
+    )
+
+    orderable = client.lula2.score(
+        protein_sequence=protein_sequence,
+        source="om",
+        tier=50,
+        n=50000,
+        top_k=10000,
+        idempotency_key="om-space-demo-001",
+    )
+```
+
+Use `smiles=[...]` to score molecules you already have. Use `source="om"` and a
+tier to score orderable Om Accessible Space molecules. Only Om Accessible Space
+score rows include `source_metadata` and can be ordered directly with Wallet
+Credits.
+
+See [LULA Score To Order](../cookbooks/lula-score-to-order.md) for the full
+score-to-order workflow.

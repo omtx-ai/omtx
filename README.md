@@ -4,7 +4,7 @@ Quick starts, tutorials, cookbooks, and runnable examples for using OMTX.
 
 Use these guides to learn the Om API, work with the `omtx` Python SDK, run
 data-access workflows, launch diligence jobs, use Hub models and artifacts, and
-run local open-weight LULA-1 scoring.
+run LULA scoring with hosted Om workflows or local open-weight models.
 
 ## Start Here
 
@@ -15,6 +15,7 @@ run local open-weight LULA-1 scoring.
 - [Cookbooks](cookbooks/README.md): applied recipes for common research and
   modeling tasks.
 - [Examples](examples/python): runnable Python scripts.
+- [Notebooks](examples/notebooks): Colab-friendly LULA workflow notebooks.
 
 ## What You Can Do
 
@@ -23,7 +24,10 @@ run local open-weight LULA-1 scoring.
 - Load binder and non-binder datasets for accessible proteins.
 - Submit diligence jobs and poll results.
 - Upload artifacts, launch Hub jobs, and retrieve outputs.
-- Score protein sequences and SMILES locally with open-weight LULA-1.
+- Score protein sequences and SMILES with hosted LULA-1/LULA-2 or local
+  open-weight LULA-1, LULA-1.1, and LULA-2.
+- Score Om Accessible Space, select molecules, and create Wallet Credits-funded
+  Molecule Fulfillment orders.
 - Use idempotency keys for safe retries.
 
 ## Prerequisites
@@ -31,7 +35,7 @@ run local open-weight LULA-1 scoring.
 - An OMTX API key for API, hosted, and Hub workflows.
 - Python 3.9+ for SDK examples.
 - `pip install omtx` for Python workflows.
-- `pip install "omtx[lula]>=2.0.12"` for local open-weight LULA-1 scoring.
+- `pip install "omtx[lula]>=2.0.20"` for local open-weight LULA scoring.
 
 Keep API keys in environment variables:
 
@@ -43,8 +47,11 @@ export OMTX_API_KEY="your-api-key"
 
 - New to OMTX: start with [API Quickstart](quick-start/api.md) or
   [Python SDK Quickstart](quick-start/sdk.md).
-- Local LULA-1 scoring: follow
-  [Local LULA-1 Quickstart](quick-start/lula.md).
+- LULA scoring: follow [LULA Quickstart](quick-start/lula.md), then use
+  [LULA Score To Order](cookbooks/lula-score-to-order.md).
+- Colab users: open
+  [LULA Om Accessible Space To Order](examples/notebooks/lula_om_space_to_order.ipynb)
+  or [LULA Explicit SMILES](examples/notebooks/lula_explicit_smiles.ipynb).
 - Loading datasets: follow
   [Data Access Python Workflows](tutorials/data-access-python-workflows.md), then
   use [Build A Training Set](cookbooks/build-a-training-set.md).

@@ -1,9 +1,10 @@
-"""Run local open-weight LULA-1 scoring with the public omtx package.
+"""Run local open-weight LULA scoring with the public omtx package.
 
 Install first:
-    pip install "omtx[lula]>=2.0.12"
-    omtx lula download
-    omtx lula verify
+    pip install "omtx[lula]>=2.0.20"
+    hf auth login
+    omtx lula download --model lula1.1
+    omtx lula verify --model lula1.1
 """
 
 from __future__ import annotations
@@ -30,7 +31,7 @@ MOLECULES = [
 
 
 def main() -> None:
-    model = load_model()
+    model = load_model("lula1.1")
     rows = model.score(protein_sequence=CA2, smiles=MOLECULES)
     for row in sorted(rows, key=lambda item: item["rank"]):
         print(

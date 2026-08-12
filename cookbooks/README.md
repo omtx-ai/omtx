@@ -10,7 +10,8 @@ research and modeling tasks.
 - Data access: build training-ready binder/non-binder datasets.
 - Diligence: turn a question into a compact evidence briefing.
 - Hub: run artifact-backed modeling workflows and retrieve outputs.
-- CLI: run local open-weight LULA-1 scoring.
+- LULA: score explicit SMILES, or score Om Accessible Space and order selected
+  molecules through Wallet Credits.
 
 ## Recipes
 
@@ -20,6 +21,13 @@ research and modeling tasks.
   a short briefing.
 - `hub-artifact-workflow.md`: upload a structure, launch a Hub job, and retrieve
   output artifacts.
+- `lula-score-to-order.md`: score explicit SMILES, score Om Accessible Space,
+  and place Wallet Credits-funded orders for selected Om rows.
+
+## Notebooks
+
+- [LULA Om Accessible Space To Order](../examples/notebooks/lula_om_space_to_order.ipynb)
+- [LULA Explicit SMILES](../examples/notebooks/lula_explicit_smiles.ipynb)
 
 ## Best Practices
 
