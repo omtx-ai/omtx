@@ -10,6 +10,9 @@ research and modeling tasks.
 - Data access: build training-ready binder/non-binder datasets.
 - Diligence: turn a question into a compact evidence briefing.
 - Hub: run artifact-backed modeling workflows and retrieve outputs.
+- Molecule fulfillment: fetch fixed-tier Om Accessible Space rows, score or
+  select them with your own tools, and order selected molecules through Wallet
+  Credits.
 - LULA: score explicit SMILES, or score Om Accessible Space and order selected
   molecules through Wallet Credits.
 
@@ -21,6 +24,9 @@ research and modeling tasks.
   a short briefing.
 - `hub-artifact-workflow.md`: upload a structure, launch a Hub job, and retrieve
   output artifacts.
+- `molecule-accessible-space-to-order.md`: fetch Om Accessible Space molecules,
+  score or filter them yourself, and place Wallet Credits-funded orders for
+  selected Om rows.
 - `lula-score-to-order.md`: score explicit SMILES, score Om Accessible Space,
   and place Wallet Credits-funded orders for selected Om rows.
 

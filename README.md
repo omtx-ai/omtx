@@ -26,8 +26,9 @@ run LULA scoring with hosted Om workflows or local open-weight models.
 - Upload artifacts, launch Hub jobs, and retrieve outputs.
 - Score protein sequences and SMILES with hosted LULA-1/LULA-2 or local
   open-weight LULA-1, LULA-1.1, and LULA-2.
-- Score Om Accessible Space, select molecules, and create Wallet Credits-funded
-  Molecule Fulfillment orders.
+- Fetch Om Accessible Space molecules by Wallet Credit tier, score them with
+  your own tools or LULA, and create Wallet Credits-funded Molecule Fulfillment
+  orders.
 - Use idempotency keys for safe retries.
 
 ## Prerequisites
@@ -49,6 +50,8 @@ export OMTX_API_KEY="your-api-key"
   [Python SDK Quickstart](quick-start/sdk.md).
 - LULA scoring: follow [LULA Quickstart](quick-start/lula.md), then use
   [LULA Score To Order](cookbooks/lula-score-to-order.md).
+- Molecule selection without LULA: use
+  [Molecule Accessible Space To Order](cookbooks/molecule-accessible-space-to-order.md).
 - Colab users: open
   [LULA Om Accessible Space To Order](examples/notebooks/lula_om_space_to_order.ipynb)
   or [LULA Explicit SMILES](examples/notebooks/lula_explicit_smiles.ipynb).

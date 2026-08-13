@@ -11,6 +11,11 @@ The same `omtx` SDK supports four common paths:
   selected rows
 - local open-weight LULA scoring over explicit SMILES
 
+If you want Om Accessible Space molecules but plan to score or filter them with
+your own tools, use
+[Molecule Accessible Space To Order](molecule-accessible-space-to-order.md)
+instead. That path does not use LULA.
+
 ## Prerequisites
 
 - `pip install "omtx[lula]>=2.0.20"`
@@ -29,6 +34,9 @@ export OMTX_API_KEY="omtx_..."
   hosted LULA-2 over an explicit SMILES list
 - [`examples/python/lula_score_om_space_to_order.py`](../examples/python/lula_score_om_space_to_order.py):
   hosted LULA-2 over Om Accessible Space, with optional ordering
+- [`examples/python/molecule_accessible_space_to_order.py`](../examples/python/molecule_accessible_space_to_order.py):
+  Om Accessible Space fetch, local/custom scoring placeholder, and optional
+  ordering without LULA
 - [`examples/python/lula_explicit_smiles.py`](../examples/python/lula_explicit_smiles.py):
   local open-weight LULA over an explicit SMILES list
 - [`examples/notebooks/lula_om_space_to_order.ipynb`](../examples/notebooks/lula_om_space_to_order.ipynb)
@@ -42,6 +50,12 @@ Use smiles=[...] to score molecules you already have.
 Use source="om" and tier=50/100/150/... to score orderable Om Accessible Space molecules.
 Only Om Accessible Space score rows include source_metadata and can be ordered directly with Wallet Credits.
 ```
+
+For custom scoring without LULA, fetch orderable rows with
+`client.molecules.accessible_space(...)`, get SMILES with
+`client.molecules.smiles(...)`, attach scores with
+`client.molecules.with_scores(...)`, and order selected rows with
+`client.molecules.order(...)`.
 
 ## Hosted LULA Over Explicit SMILES
 

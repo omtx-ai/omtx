@@ -167,3 +167,45 @@ Credits.
 
 See [LULA Score To Order](../cookbooks/lula-score-to-order.md) for the full
 score-to-order workflow.
+
+## Molecule Access Without LULA
+
+Use Om Accessible Space directly when you want orderable molecules but want to
+score, filter, or randomly select them yourself:
+
+```python
+from uuid import uuid4
+
+from omtx import OmClient
+
+with OmClient() as client:
+    pool = client.molecules.accessible_space(
+        tier=50,
+        n=50000,
+        seed=123,
+        idempotency_key="om-space-slice-demo-001",
+    )
+
+    # smiles is a plain list[str], one SMILES per molecule.
+    smiles = client.molecules.smiles(pool)
+
+    # scores must be a same-length list[float], one score per SMILES.
+    scores = score_with_your_model(smiles)
+
+    # with_scores adds your scores back to the orderable Om rows.
+    scored_rows = client.molecules.with_scores(pool, scores)
+
+    selected = sorted(scored_rows, key=lambda row: row["score"], reverse=True)[:96]
+
+    addresses = client.molecules.shipping_addresses()
+    order = client.molecules.order(
+        items=selected,
+        shipping_address_id=addresses["default_shipping_address_id"],
+        idempotency_key=f"molecule-order-{uuid4()}",
+    )
+```
+
+`with_scores(...)` keeps the Om order metadata attached while adding your scores.
+See
+[Molecule Accessible Space To Order](../cookbooks/molecule-accessible-space-to-order.md)
+for the full molecule-only workflow.
