@@ -8,8 +8,8 @@
     {
       "name": "om-discovery",
       "source": "./",
-      "description": "Hosted Om MCP plus the Om Discovery skill for LULA scoring, Discovery quotes, Hub jobs, and diligence.",
-      "version": "0.1.0",
+      "description": "Hosted Om MCP plus the Om Discovery playbook for LULA, Discovery, Discovery Challenges, Hub, Diligence, and molecule orders.",
+      "version": "0.2.0",
       "author": {
         "name": "Om Therapeutics"
       }

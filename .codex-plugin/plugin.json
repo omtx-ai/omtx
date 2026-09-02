@@ -1,7 +1,7 @@
 {
   "name": "om-discovery",
-  "version": "0.1.0",
-  "description": "Connect the hosted Om MCP and run LULA scoring, Discovery quotes, Hub jobs, and diligence.",
+  "version": "0.2.0",
+  "description": "Hosted Om MCP plus the Om Discovery playbook for LULA, Discovery, Discovery Challenges, Hub, Diligence, and molecule orders.",
   "author": {
     "name": "Om Therapeutics",
     "email": "support@omtx.ai",
@@ -14,16 +14,18 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Om Discovery",
-    "shortDescription": "LULA scoring, Discovery, and Hub from Om MCP",
-    "longDescription": "Use Om from ChatGPT and Codex to score proteins with LULA, quote Discovery and molecule fulfillment, launch Hub jobs, and run target diligence. Hosted MCP uses OAuth. Do not order until the user confirms the Wallet Credits total.",
+    "shortDescription": "Full Om MCP playbook: LULA, Discovery, Hub, Diligence, orders",
+    "longDescription": "Use Om from ChatGPT and Codex for the live omtx.ai products: LULA scoring, Discovery with AS-MS, Discovery Challenges, Hub, Diligence, Accessible Space, and molecule orders. Adaptyv, A-Alpha Bio, zencloud, and my genome are not ready. Hosted MCP uses email-only OAuth. Quote Wallet Credits first. Do not order until the user confirms the total.",
     "developerName": "Om Therapeutics",
     "websiteURL": "https://www.omtx.ai",
     "privacyPolicyURL": "https://www.omtx.ai/privacy-policy",
     "termsOfServiceURL": "https://www.omtx.ai/terms",
     "defaultPrompt": [
-      "Run om_status. If Om MCP is healthy, show my Wallet Credits.",
+      "Run om_status. If Om MCP is healthy, show my Wallet Credits and the highest-value next steps.",
       "Score this protein with LULA-2 against Small Om Accessible Space and return the top 25 hits.",
-      "Quote Discovery for 10 molecules in Small space with AS-MS. Do not order until I confirm."
+      "Quote Discovery for 10 molecules in Small space with AS-MS. Do not order until I confirm.",
+      "Show active Hub models, then launch Boltz-2 on this protein-ligand pair.",
+      "Search KRAS with Diligence and summarize the therapeutic strategy with citations."
     ]
   }
 }

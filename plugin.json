@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "om-discovery",
-  "version": "0.1.0",
-  "description": "Connect the hosted Om MCP and run LULA scoring, Discovery quotes, Hub jobs, and diligence from Claude, Codex, Cursor, Copilot, Gemini, Grok, or another remote MCP client.",
+  "version": "0.2.0",
+  "description": "Hosted Om MCP plus the Om Discovery playbook for the live omtx.ai products: LULA, Discovery, Discovery Challenges, Hub, Diligence, Accessible Space, and molecule orders.",
   "author": {
     "name": "Om Therapeutics",
     "email": "support@omtx.ai",

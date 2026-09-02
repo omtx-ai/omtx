@@ -1,7 +1,7 @@
 {
   "name": "om-discovery",
-  "description": "Connect the hosted Om MCP and run LULA scoring, Discovery quotes, Hub jobs, and diligence.",
-  "version": "0.1.0",
+  "description": "Hosted Om MCP plus the Om Discovery playbook for LULA, Discovery, Discovery Challenges, Hub, Diligence, and molecule orders.",
+  "version": "0.2.0",
   "author": {
     "name": "Om Therapeutics",
     "email": "support@omtx.ai",
