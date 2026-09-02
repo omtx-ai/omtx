@@ -1,0 +1,29 @@
+{
+  "name": "om-discovery",
+  "version": "0.1.0",
+  "description": "Connect the hosted Om MCP and run LULA scoring, Discovery quotes, Hub jobs, and diligence.",
+  "author": {
+    "name": "Om Therapeutics",
+    "email": "support@omtx.ai",
+    "url": "https://www.omtx.ai"
+  },
+  "homepage": "https://www.omtx.ai/docs/api/mcp/overview",
+  "license": "Apache-2.0",
+  "keywords": ["mcp", "om", "lula", "drug-discovery"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Om Discovery",
+    "shortDescription": "LULA scoring, Discovery, and Hub from Om MCP",
+    "longDescription": "Use Om from ChatGPT and Codex to score proteins with LULA, quote Discovery and molecule fulfillment, launch Hub jobs, and run target diligence. Hosted MCP uses OAuth. Do not order until the user confirms the Wallet Credits total.",
+    "developerName": "Om Therapeutics",
+    "websiteURL": "https://www.omtx.ai",
+    "privacyPolicyURL": "https://www.omtx.ai/privacy-policy",
+    "termsOfServiceURL": "https://www.omtx.ai/terms",
+    "defaultPrompt": [
+      "Run om_status. If Om MCP is healthy, show my Wallet Credits.",
+      "Score this protein with LULA-2 against Small Om Accessible Space and return the top 25 hits.",
+      "Quote Discovery for 10 molecules in Small space with AS-MS. Do not order until I confirm."
+    ]
+  }
+}

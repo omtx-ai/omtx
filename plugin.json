@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "om-discovery",
+  "version": "0.1.0",
+  "description": "Connect the hosted Om MCP and run LULA scoring, Discovery quotes, Hub jobs, and diligence from Claude, Codex, Cursor, Copilot, Gemini, Grok, or another remote MCP client.",
+  "author": {
+    "name": "Om Therapeutics",
+    "email": "support@omtx.ai",
+    "url": "https://www.omtx.ai"
+  },
+  "homepage": "https://www.omtx.ai/docs/api/mcp/overview",
+  "repository": "https://github.com/omtx-ai/omtx",
+  "license": "Apache-2.0",
+  "keywords": [
+    "mcp",
+    "om",
+    "omtx",
+    "lula",
+    "drug-discovery",
+    "biology",
+    "discovery"
+  ]
+}

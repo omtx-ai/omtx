@@ -1,0 +1,16 @@
+{
+  "name": "om-discovery",
+  "description": "Connect the hosted Om MCP and run LULA scoring, Discovery quotes, Hub jobs, and diligence.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Om Therapeutics",
+    "email": "support@omtx.ai",
+    "url": "https://www.omtx.ai"
+  },
+  "homepage": "https://www.omtx.ai/docs/api/mcp/overview",
+  "repository": "https://github.com/omtx-ai/omtx",
+  "license": "Apache-2.0",
+  "keywords": ["mcp", "om", "lula", "drug-discovery"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

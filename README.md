@@ -1,10 +1,30 @@
 # omtx
 
-Quick starts, tutorials, cookbooks, and runnable examples for using OMTX.
+Quick starts, tutorials, cookbooks, and the Om Discovery plugin for using Om
+from coding agents.
 
 Use these guides to learn the Om API, work with the `omtx` Python SDK, run
 data-access workflows, launch diligence jobs, use Hub models and artifacts, and
 run LULA scoring with hosted Om workflows or local open-weight models.
+
+## Om MCP plugin
+
+Add the hosted Om MCP and the Om Discovery skill to Claude Code, Codex, Cursor,
+Copilot, Gemini, Grok, or another compatible agent:
+
+```bash
+npx skills add omtx-ai/omtx
+npx plugins add omtx-ai/omtx
+```
+
+Or point any remote HTTP MCP client at:
+
+```text
+https://agents.omtx.ai/mcp
+```
+
+Complete the client OAuth login. Om asks for email only. Then ask for
+`om_status`. Setup details: [Om MCP Overview](https://www.omtx.ai/docs/api/mcp/overview).
 
 ## Start Here
 
@@ -46,6 +66,8 @@ export OMTX_API_KEY="your-api-key"
 
 ## Choose A Path
 
+- Agent / MCP: install the plugin above, or follow
+  [Om MCP Overview](https://www.omtx.ai/docs/api/mcp/overview).
 - New to OMTX: start with [API Quickstart](quick-start/api.md) or
   [Python SDK Quickstart](quick-start/sdk.md).
 - LULA scoring: follow [LULA Quickstart](quick-start/lula.md), then use

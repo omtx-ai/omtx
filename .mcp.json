@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "omtx": {
+      "type": "http",
+      "url": "https://agents.omtx.ai/mcp"
+    }
+  }
+}
