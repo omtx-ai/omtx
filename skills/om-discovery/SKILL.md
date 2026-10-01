@@ -3,19 +3,21 @@ name: om-discovery
 description: >
   Full playbook for hosted Om MCP. Highlight the live omtx.ai products: LULA
   scoring, Discovery with AS-MS, Discovery Challenges, Hub, Diligence, Om
-  Accessible Space, and molecule ordering. Also covers Data Access, Wallet
-  Credits, and quote-then-confirm rules. Adaptyv, A-Alpha Bio, zencloud, and
-  my genome are not ready; do not treat them as available. Use when connecting
+  Accessible Space, molecule ordering, and ZenCloud scientific sessions.
+  Also covers Data Access, Wallet Credits, and quote-then-confirm rules.
+  Adaptyv, A-Alpha Bio, and my genome are not ready; do not treat them as
+  available. Use when connecting
   to https://agents.omtx.ai/mcp or the user mentions Om, OMTX, LULA, Discovery,
-  Hub, Diligence, or ordering molecules.
+  Hub, Diligence, ZenCloud, or ordering molecules.
 ---
 
 # Om Discovery
 
 This skill is the customer playbook for hosted Om MCP. Lead with the live
 omtx.ai products: **LULA**, **Discovery**, **Discovery Challenges**, **Hub**,
-**Diligence**, **Om Accessible Space**, and **ordering molecules**. Do not
-invent prices, scores, binder labels, or order IDs. Call Om tools and report
+**Diligence**, **Om Accessible Space**, **ordering molecules**, and
+**ZenCloud**. Do not invent prices, scores, binder labels, or order IDs.
+Call Om tools and report
 what they return.
 
 ## Not ready yet
@@ -25,7 +27,6 @@ Do not run them as a live product path:
 
 - Adaptyv (`adaptyv_*`)
 - A-Alpha Bio (`aalphabio_*`)
-- zencloud (`zencloud`)
 - my genome (`my_genome_*`)
 
 If the user asks for any of those, say they are coming soon. Offer a live
@@ -46,8 +47,18 @@ into MCP config.
 If the MCP is not attached: add that URL, complete browser login, restart if
 tools are missing, then call `om_status`.
 
-If the client cannot complete remote MCP OAuth, tell the user to use the Om API
-with an API key instead.
+If a hosted call reports an authentication failure, complete email-only OAuth
+again for that same connection, restart its MCP connection, and verify with
+`om_status`. Keep the authorized account. Do not substitute an API key or
+another account to bypass a failed customer OAuth check.
+
+For a configured Codex MCP server, use its actual configured name:
+
+```bash
+codex mcp login --scopes email <configured-server-name>
+```
+
+Replace the placeholder before running the command.
 
 Cursor: desktop only. Do not claim Cursor on the web or Cursor Agents.
 
@@ -56,7 +67,7 @@ Cursor: desktop only. Do not claim Cursor on the web or Cursor Agents.
 Keep these rules for every paid path:
 
 - Quote first. Show the Wallet Credits total from the tool. Wait for an explicit
-  confirm of **that total** before any order tool.
+  confirm of **that total** before any order tool or ZenCloud reservation.
 - Chat-only words such as "ok", "go", or "proceed" are not enough unless the
   user confirmed the quoted total (and shipping address when shipping).
 - Physical molecule orders are separate from Discovery validation data.
@@ -74,6 +85,7 @@ Keep these rules for every paid path:
 | Discovery Challenges | Submit om_50 molecules for wet-lab validation / payout challenges | `discovery_challenges_list`, `discovery_challenge_validate`, `discovery_challenge_submit` |
 | Order molecules | Ship selected Om Accessible Space hits with Wallet Credits | `molecule_fulfillment_pricing`, `molecule_fulfillment_order` |
 | Hub | Structure, docking, design (Boltz-2 and other live models) | `hub_models_catalog`, then `hub_boltz2` / `hub_submit` |
+| ZenCloud | Reserve a fixed term for a cataloged scientific image, then run typed workloads | `zencloud` with `action=describe`; quote and confirm before `start` |
 | Diligence | Target landscape with citations | `diligence_search`, then gather / deep only if needed |
 | Accessible Space | Fetch or export Om molecules without scoring | `molecule_accessible_space`, `molecule_accessible_space_export` |
 | Data Access | Account Generated Data binders / non-binders | `datasets_catalog`, `binders_get_ranked_molecules` |
@@ -91,7 +103,9 @@ After Hello World, unless the user names a later step:
 4. Hub if they want structure/docking/design on a hit.
 5. Discovery Challenges if they want to submit om_50 molecules to a live challenge.
 6. Data Access if they already have Generated Data.
-7. If they ask for Adaptyv, A-Alpha Bio, zencloud, or my genome, say those are not ready.
+7. ZenCloud if they want a scientific session: describe, quote, and confirm
+   before reserving (Case 19).
+8. If they ask for Adaptyv, A-Alpha Bio, or my genome, say those are not ready.
 
 Protein sequences for scoring and Discovery: methionine-start amino acid
 sequence. Discovery Launch sequences are typically 300–1500 aa starting with M.
@@ -111,8 +125,9 @@ and list the highest-value things I can do next.
 
 **Do this:** Call those three. Then highlight the live omtx.ai next steps:
 score a protein with LULA, quote Discovery, order molecules, Discovery
-Challenges, Hub, or Diligence. Do not launch scoring or orders yet. Do not
-offer Adaptyv, A-Alpha Bio, zencloud, or my genome.
+Challenges, Hub, Diligence, or describe available ZenCloud images. Do not
+launch scoring, orders, or reservations yet. Do not offer Adaptyv, A-Alpha
+Bio, or my genome.
 
 ---
 
@@ -388,10 +403,10 @@ until I confirm the Wallet Credits total.
 
 ## Not ready — do not run these
 
-If the user asks for Adaptyv, A-Alpha Bio, zencloud, or my genome:
+If the user asks for Adaptyv, A-Alpha Bio, or my genome:
 
 - Say that product is not ready yet / coming soon.
-- Do not call `adaptyv_*`, `aalphabio_*`, `zencloud`, or `my_genome_*`.
+- Do not call `adaptyv_*`, `aalphabio_*`, or `my_genome_*`.
 - Offer a live omtx.ai path: LULA, Discovery, Challenges, Hub, Diligence, or
   molecule orders.
 
@@ -521,6 +536,79 @@ Typical customer loop in one chat:
 
 Keep outputs in context. Do not restart from scratch unless the user changes
 the target.
+
+---
+
+## Case 19 — ZenCloud scientific sessions
+
+**You say**
+
+```text
+Describe available ZenCloud images. If STORMM supports RDKit preparation,
+quote the shortest permitted reservation to prepare ethanol (SMILES CCO).
+Show the complete Wallet Credits price and fixed-term policy. Wait for my
+confirmation before reserving, then run it and validate the returned files.
+```
+
+**Tools:** `zencloud` with `action=describe`, `start`, `run`, or `get`.
+Use `artifacts_upload_bytes` for required file inputs and `credits_get` for
+the current balance. There is no separate quote, stop, or extend action.
+
+**Do this**
+
+1. **Describe first.** Read the active image's applications, parameter schema,
+   file types and size limits, reservation bounds, hourly Wallet Credits rate,
+   and artifact retention policy. Use only an advertised application and its
+   typed inputs. Do not infer support from the image name or copy a remembered
+   application list, price, or reservation limit.
+2. **Choose a session.** Reuse a known owned, ready session when the user wants
+   to continue there. If the response lists open sessions, or the user wants
+   several workloads, resolve whether to share a session sequentially or open
+   additional sessions for parallel work. Each additional session needs its
+   own full-term quote and confirmation. A missing session list does not prove
+   no session exists.
+3. **Quote before start.** For a new session, validate the chosen image and
+   `reservation_minutes` against the live minimum, maximum, and increment.
+   Calculate the full-term total as
+   `ceil(wallet_credits_per_hour * reservation_minutes / 60)` using the live
+   catalog rate. Show the image, term, exact total, available Wallet Credits,
+   and fixed-term policy. Wait for confirmation of those values before
+   `action=start`. If the catalog or quote changes, confirm the revised values.
+4. **Wait for readiness.** Start with the approved image and term, recording
+   the accepted `session_id`. Poll `action=get` with that ID until `ready` or
+   a terminal state. The paid clock starts at readiness; use the returned
+   `term_started_at` and `expires_at`. The complete term is charged once at
+   readiness. After readiness it cannot be cancelled, extended, or refunded;
+   workload failure or early completion does not reduce that charge. A failed
+   provisioning attempt follows the returned status and Wallet outcome; do not
+   invent a confirmed refund from an error alone.
+5. **Run typed work sequentially.** Use `action=run` with the accepted session
+   ID, schema-valid `parameters`, and any required `files` mapping. Upload file
+   inputs as owned Om artifacts first; use their accepted artifact IDs, the
+   contract's file paths, and allowed media types. Do not send shell commands
+   or arbitrary executables. Record the accepted `invocation_id`, then poll
+   `action=get` with both IDs through its terminal state. Only one invocation
+   runs per session; `session_busy` is not a queue. Wait for the current work
+   before submitting the next invocation on that session.
+6. **Validate results.** For `completed`, retrieve the authorized output
+   artifact while retention permits. Check archive bytes and SHA-256 against
+   the response, then file sizes and hashes against the output manifest.
+   Inspect the scientific results and report their limitations. `failed` and
+   `cancelled_at_expiry` do not provide a successful output archive. At fixed
+   expiry, active work is cancelled; completed exports follow the returned
+   retention deadline. Get a fresh authorized download URL when an old link
+   expires, while the artifact is still retained.
+
+Keep stable `idempotency_key` values for the original start and run requests.
+After a timeout or uncertain write, preserve the original key and accepted IDs;
+recover the original operation through supported status or same-key replay.
+Do not blindly start a replacement reservation or repeat a workload. If no
+accepted ID is available and the client cannot recover the original operation,
+report the uncertainty and seek support before another paid attempt.
+
+**Reply shape:** The actual session and invocation states, quoted and confirmed
+charge outcome, validated authorized results, retention deadline, and any
+scientific limitations. Do not infer successful science from an accepted run.
 
 ---
 
