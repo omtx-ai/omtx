@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "example": "tsa-protein",
+  "design_file_path": "files/example/protein_binding_small_molecule/chorismite.yaml",
+  "description": "Source locations and frozen byte counts/checksums for the tested example. Verify before registering inputs; this manifest is not a ZenCloud run request.",
+  "files": [
+    {
+      "key": "design_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/protein_binding_small_molecule/chorismite.yaml",
+      "path": "files/example/protein_binding_small_molecule/chorismite.yaml",
+      "bytes": 99,
+      "sha256": "a5b8f9474e43151c7f6b028f2e29b17b58d21c1863ca4a196801c642dc8403f1",
+      "media_type": "application/octet-stream"
+    }
+  ]
+}

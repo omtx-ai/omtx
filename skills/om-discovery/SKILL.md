@@ -8,7 +8,7 @@ description: >
   Adaptyv, A-Alpha Bio, and my genome are not ready; do not treat them as
   available. Use when connecting
   to https://agents.omtx.ai/mcp or the user mentions Om, OMTX, LULA, Discovery,
-  Hub, Diligence, ZenCloud, BindCraft2 on Om, or ordering molecules.
+  Hub, Diligence, ZenCloud, BoltzGen on Om, BindCraft2 on Om, or ordering molecules.
 ---
 
 # Om Discovery
@@ -558,6 +558,11 @@ For BindCraft2 design, controls, result interpretation, or campaign continuation
 read [references/zencloud-bindcraft2.md](references/zencloud-bindcraft2.md).
 That reference distinguishes functional tests, known-pair positive controls,
 and binder discovery; its examples do not establish hosted availability.
+
+For BoltzGen on rented compute, read
+[references/boltzgen/zencloud-boltzgen.md](references/boltzgen/zencloud-boltzgen.md).
+It includes three vetted starting examples, complete run templates and input
+manifests while preserving customer control over scientific settings.
 
 **Do this**
 

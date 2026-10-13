@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "example": "pdl1-fab",
+  "design_file_path": "files/example/fab_targets/pdl1.yaml",
+  "description": "Source locations and frozen byte counts/checksums for the tested example. Verify before registering inputs; this manifest is not a ZenCloud run request.",
+  "files": [
+    {
+      "key": "scaffold_adalimumab_6cr1_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/adalimumab.6cr1.cif",
+      "path": "files/example/fab_scaffolds/adalimumab.6cr1.cif",
+      "bytes": 677550,
+      "sha256": "5c2ce3decc324d7c0ebf557835f6c355c6d4490fb463ada9a3a2c5f8ce9a13b4",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_adalimumab_6cr1_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/adalimumab.6cr1.yaml",
+      "path": "files/example/fab_scaffolds/adalimumab.6cr1.yaml",
+      "bytes": 2185,
+      "sha256": "1fe782958de0f422acfa610594b18e037e3c84f39a3216168604039085c4447f",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_belimumab_5y9k_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/belimumab.5y9k.cif",
+      "path": "files/example/fab_scaffolds/belimumab.5y9k.cif",
+      "bytes": 692046,
+      "sha256": "27ddf7e9328345cee32473811e8593a23b7ab547d7fa4aee7ec0df4c2ab92064",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_belimumab_5y9k_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/belimumab.5y9k.yaml",
+      "path": "files/example/fab_scaffolds/belimumab.5y9k.yaml",
+      "bytes": 2205,
+      "sha256": "44404b60b2f5b52bf863d9844dbb8f757d3e27af913c7619b26988eb1b86ce57",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_crenezumab_5vzy_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/crenezumab.5vzy.cif",
+      "path": "files/example/fab_scaffolds/crenezumab.5vzy.cif",
+      "bytes": 619778,
+      "sha256": "e9f60e63d9a0ff52b52302657f159812edb0bc167c8a1f69fc6aa684e80aa092",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_crenezumab_5vzy_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/crenezumab.5vzy.yaml",
+      "path": "files/example/fab_scaffolds/crenezumab.5vzy.yaml",
+      "bytes": 2178,
+      "sha256": "67c96b29159b5efd99c100d2d4062d6b0b9f92bf30d4b1877f21eaadb5b35b5e",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_dupilumab_6wgb_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/dupilumab.6wgb.cif",
+      "path": "files/example/fab_scaffolds/dupilumab.6wgb.cif",
+      "bytes": 694743,
+      "sha256": "66256965b80494f4827c8cb86ae39b96e57f31f865ecaa9367e4f68587cd6c00",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_dupilumab_6wgb_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/dupilumab.6wgb.yaml",
+      "path": "files/example/fab_scaffolds/dupilumab.6wgb.yaml",
+      "bytes": 2208,
+      "sha256": "dffd05ed941c054157d0be4237ccdc30949be45504dd07257fdb89dcdc357226",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_golimumab_5yoy_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/golimumab.5yoy.cif",
+      "path": "files/example/fab_scaffolds/golimumab.5yoy.cif",
+      "bytes": 3729915,
+      "sha256": "90465c48dfaf4760023ff70ee126e1f64e8fabebb1880b96696a58c027ebd530",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_golimumab_5yoy_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/golimumab.5yoy.yaml",
+      "path": "files/example/fab_scaffolds/golimumab.5yoy.yaml",
+      "bytes": 2002,
+      "sha256": "2f4374c09ef066b0f2d9476dffea0e051958a729b3d51d24c1fb4a4c95f38f56",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_guselkumab_4m6m_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/guselkumab.4m6m.cif",
+      "path": "files/example/fab_scaffolds/guselkumab.4m6m.cif",
+      "bytes": 407651,
+      "sha256": "0b409c365af3c83736033de106dc8e152d17b5f66b3eb3d36bff52e186f30acb",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_guselkumab_4m6m_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/guselkumab.4m6m.yaml",
+      "path": "files/example/fab_scaffolds/guselkumab.4m6m.yaml",
+      "bytes": 2187,
+      "sha256": "8dc3bcb6ee930b491d7612031c2eb0008e333c41b00a10a290835fc7b5b6c756",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_mab1_3h42_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/mab1.3h42.cif",
+      "path": "files/example/fab_scaffolds/mab1.3h42.cif",
+      "bytes": 899870,
+      "sha256": "75cf20e72d3e9c582b39d787432ab0d2529273c5aa5b528ab8a073b6e5438c1f",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_mab1_3h42_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/mab1.3h42.yaml",
+      "path": "files/example/fab_scaffolds/mab1.3h42.yaml",
+      "bytes": 2193,
+      "sha256": "62c2938c9ce22a7a47bb26083e93916902f52059be328db1807ddf1661fce2fb",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_necitumumab_6b3s_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/necitumumab.6b3s.cif",
+      "path": "files/example/fab_scaffolds/necitumumab.6b3s.cif",
+      "bytes": 1981734,
+      "sha256": "8e423dbf72d9b0bb6a35c2996785a61875c9a6e3db6b5c5e178981e7bc38bcef",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_necitumumab_6b3s_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/necitumumab.6b3s.yaml",
+      "path": "files/example/fab_scaffolds/necitumumab.6b3s.yaml",
+      "bytes": 2180,
+      "sha256": "ba939d3eee547811c106a0ee04785c4e49b55337777901e57cf1cd76438ff50e",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_nirsevimab_5udc_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/nirsevimab.5udc.cif",
+      "path": "files/example/fab_scaffolds/nirsevimab.5udc.cif",
+      "bytes": 3953099,
+      "sha256": "93e3c6db56352ae6e0909ecd863bdb01924cc8393891648634772efff35a185b",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_nirsevimab_5udc_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/nirsevimab.5udc.yaml",
+      "path": "files/example/fab_scaffolds/nirsevimab.5udc.yaml",
+      "bytes": 2209,
+      "sha256": "e7cb94414bd1cc63d0f787e83cd1acdfc635668d3d4aee628cbc3d2c49b91fd8",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_sarilumab_8iow_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/sarilumab.8iow.cif",
+      "path": "files/example/fab_scaffolds/sarilumab.8iow.cif",
+      "bytes": 771575,
+      "sha256": "08e05982389bd78648b953a628e284614a758d58db98357f4e421bf737b6211f",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_sarilumab_8iow_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/sarilumab.8iow.yaml",
+      "path": "files/example/fab_scaffolds/sarilumab.8iow.yaml",
+      "bytes": 2175,
+      "sha256": "c395cffaeb9300e8042dabd127dc890fd2730e4d5369319d48c3649cf071b66e",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_secukinumab_6wio_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/secukinumab.6wio.cif",
+      "path": "files/example/fab_scaffolds/secukinumab.6wio.cif",
+      "bytes": 860166,
+      "sha256": "3cba1a7a486c6cffd1a0b3e4c0d3004712f6a9bd1e1b588d27e0c1e9d4f0a680",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_secukinumab_6wio_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/secukinumab.6wio.yaml",
+      "path": "files/example/fab_scaffolds/secukinumab.6wio.yaml",
+      "bytes": 2192,
+      "sha256": "e823ac1dfd5d057c05eb940dcb8a71d24a8869537c9bf4a0180ce8fbb448117c",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_tezepelumab_5j13_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/tezepelumab.5j13.cif",
+      "path": "files/example/fab_scaffolds/tezepelumab.5j13.cif",
+      "bytes": 846893,
+      "sha256": "438291af87290feaf94ed02c76401eeb14dea352cec680f268bcb9161f587827",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_tezepelumab_5j13_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/tezepelumab.5j13.yaml",
+      "path": "files/example/fab_scaffolds/tezepelumab.5j13.yaml",
+      "bytes": 2267,
+      "sha256": "52fc6cc130a5c7536128b71b37c5309ad102c61e8bfda519e4f89f246ee36c1a",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_tralokinumab_5l6y_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/tralokinumab.5l6y.cif",
+      "path": "files/example/fab_scaffolds/tralokinumab.5l6y.cif",
+      "bytes": 829396,
+      "sha256": "e0cf3758e917ffa2ee26216eb5313fbb3acf45430cf6408adde9415e2cc9ffb2",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_tralokinumab_5l6y_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/tralokinumab.5l6y.yaml",
+      "path": "files/example/fab_scaffolds/tralokinumab.5l6y.yaml",
+      "bytes": 2198,
+      "sha256": "b49e341862d08ff15d460495c79634b452eb34594e74386069271e6b7dc9972c",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_ustekinumab_3hmw_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/ustekinumab.3hmw.cif",
+      "path": "files/example/fab_scaffolds/ustekinumab.3hmw.cif",
+      "bytes": 683889,
+      "sha256": "ebd9c46e6119b233a21719bb9151fdc37380f29da3f674746779e939229d5d06",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "scaffold_ustekinumab_3hmw_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_scaffolds/ustekinumab.3hmw.yaml",
+      "path": "files/example/fab_scaffolds/ustekinumab.3hmw.yaml",
+      "bytes": 2188,
+      "sha256": "34b2a661ca1add67995ae17083c9f534c1a25b623e8cc2f1ca505c62daba0320",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "target_cif",
+      "source_url": "https://files.rcsb.org/download/7UXQ.cif",
+      "path": "files/example/fab_targets/7uxq.cif",
+      "bytes": 335174,
+      "sha256": "add7149fe3816a3ad12127d1750aa47f2759864950de12f6a4a2e312c8be43a0",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "design_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/fab_targets/pdl1.yaml",
+      "path": "files/example/fab_targets/pdl1.yaml",
+      "bytes": 855,
+      "sha256": "4c90d9738c63de68443d6f997bf83da336a98ea56d9452e8ff4d07f227baa9c2",
+      "media_type": "application/octet-stream"
+    }
+  ]
+}

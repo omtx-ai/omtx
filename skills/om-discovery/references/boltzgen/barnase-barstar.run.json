@@ -1,0 +1,40 @@
+{
+  "action": "run",
+  "session_id": "<returned-session-id>",
+  "parameters": {
+    "application": "run",
+    "arguments": [
+      "files/example/inverse_folding/1brs.yaml",
+      "--output",
+      "output",
+      "--protocol",
+      "protein-redesign",
+      "--num_designs",
+      "2",
+      "--budget",
+      "1",
+      "--num_workers",
+      "0",
+      "--devices",
+      "1",
+      "--use_kernels",
+      "auto",
+      "--diffusion_batch_size",
+      "1",
+      "--inverse_fold_num_sequences",
+      "1"
+    ]
+  },
+  "files": {
+    "structure_cif": {
+      "artifact_id": "<registered-structure_cif-artifact-uuid>",
+      "path": "files/example/inverse_folding/1brs.cif",
+      "media_type": "application/octet-stream"
+    },
+    "design_yaml": {
+      "artifact_id": "<registered-design_yaml-artifact-uuid>",
+      "path": "files/example/inverse_folding/1brs.yaml",
+      "media_type": "application/octet-stream"
+    }
+  }
+}
