@@ -1,0 +1,35 @@
+{
+  "action": "run",
+  "session_id": "<returned-session-id>",
+  "parameters": {
+    "application": "run",
+    "arguments": [
+      "files/example/protein_binding_small_molecule/chorismite.yaml",
+      "--output",
+      "output",
+      "--protocol",
+      "protein-small_molecule",
+      "--num_designs",
+      "2",
+      "--budget",
+      "1",
+      "--num_workers",
+      "0",
+      "--devices",
+      "1",
+      "--use_kernels",
+      "auto",
+      "--diffusion_batch_size",
+      "1",
+      "--inverse_fold_num_sequences",
+      "1"
+    ]
+  },
+  "files": {
+    "design_yaml": {
+      "artifact_id": "<registered-design_yaml-artifact-uuid>",
+      "path": "files/example/protein_binding_small_molecule/chorismite.yaml",
+      "media_type": "application/octet-stream"
+    }
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "action": "run",
+  "session_id": "<returned-session-id>",
+  "parameters": {
+    "application": "run",
+    "arguments": [
+      "files/example/fab_targets/pdl1.yaml",
+      "--output",
+      "output",
+      "--protocol",
+      "antibody-anything",
+      "--num_designs",
+      "2",
+      "--budget",
+      "1",
+      "--num_workers",
+      "0",
+      "--devices",
+      "1",
+      "--use_kernels",
+      "auto",
+      "--diffusion_batch_size",
+      "1",
+      "--inverse_fold_num_sequences",
+      "1"
+    ]
+  },
+  "files": {
+    "scaffold_adalimumab_6cr1_cif": {
+      "artifact_id": "<registered-scaffold_adalimumab_6cr1_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/adalimumab.6cr1.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_adalimumab_6cr1_yaml": {
+      "artifact_id": "<registered-scaffold_adalimumab_6cr1_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/adalimumab.6cr1.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_belimumab_5y9k_cif": {
+      "artifact_id": "<registered-scaffold_belimumab_5y9k_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/belimumab.5y9k.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_belimumab_5y9k_yaml": {
+      "artifact_id": "<registered-scaffold_belimumab_5y9k_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/belimumab.5y9k.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_crenezumab_5vzy_cif": {
+      "artifact_id": "<registered-scaffold_crenezumab_5vzy_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/crenezumab.5vzy.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_crenezumab_5vzy_yaml": {
+      "artifact_id": "<registered-scaffold_crenezumab_5vzy_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/crenezumab.5vzy.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_dupilumab_6wgb_cif": {
+      "artifact_id": "<registered-scaffold_dupilumab_6wgb_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/dupilumab.6wgb.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_dupilumab_6wgb_yaml": {
+      "artifact_id": "<registered-scaffold_dupilumab_6wgb_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/dupilumab.6wgb.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_golimumab_5yoy_cif": {
+      "artifact_id": "<registered-scaffold_golimumab_5yoy_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/golimumab.5yoy.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_golimumab_5yoy_yaml": {
+      "artifact_id": "<registered-scaffold_golimumab_5yoy_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/golimumab.5yoy.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_guselkumab_4m6m_cif": {
+      "artifact_id": "<registered-scaffold_guselkumab_4m6m_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/guselkumab.4m6m.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_guselkumab_4m6m_yaml": {
+      "artifact_id": "<registered-scaffold_guselkumab_4m6m_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/guselkumab.4m6m.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_mab1_3h42_cif": {
+      "artifact_id": "<registered-scaffold_mab1_3h42_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/mab1.3h42.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_mab1_3h42_yaml": {
+      "artifact_id": "<registered-scaffold_mab1_3h42_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/mab1.3h42.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_necitumumab_6b3s_cif": {
+      "artifact_id": "<registered-scaffold_necitumumab_6b3s_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/necitumumab.6b3s.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_necitumumab_6b3s_yaml": {
+      "artifact_id": "<registered-scaffold_necitumumab_6b3s_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/necitumumab.6b3s.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_nirsevimab_5udc_cif": {
+      "artifact_id": "<registered-scaffold_nirsevimab_5udc_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/nirsevimab.5udc.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_nirsevimab_5udc_yaml": {
+      "artifact_id": "<registered-scaffold_nirsevimab_5udc_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/nirsevimab.5udc.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_sarilumab_8iow_cif": {
+      "artifact_id": "<registered-scaffold_sarilumab_8iow_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/sarilumab.8iow.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_sarilumab_8iow_yaml": {
+      "artifact_id": "<registered-scaffold_sarilumab_8iow_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/sarilumab.8iow.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_secukinumab_6wio_cif": {
+      "artifact_id": "<registered-scaffold_secukinumab_6wio_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/secukinumab.6wio.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_secukinumab_6wio_yaml": {
+      "artifact_id": "<registered-scaffold_secukinumab_6wio_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/secukinumab.6wio.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_tezepelumab_5j13_cif": {
+      "artifact_id": "<registered-scaffold_tezepelumab_5j13_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/tezepelumab.5j13.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_tezepelumab_5j13_yaml": {
+      "artifact_id": "<registered-scaffold_tezepelumab_5j13_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/tezepelumab.5j13.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_tralokinumab_5l6y_cif": {
+      "artifact_id": "<registered-scaffold_tralokinumab_5l6y_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/tralokinumab.5l6y.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_tralokinumab_5l6y_yaml": {
+      "artifact_id": "<registered-scaffold_tralokinumab_5l6y_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/tralokinumab.5l6y.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_ustekinumab_3hmw_cif": {
+      "artifact_id": "<registered-scaffold_ustekinumab_3hmw_cif-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/ustekinumab.3hmw.cif",
+      "media_type": "application/octet-stream"
+    },
+    "scaffold_ustekinumab_3hmw_yaml": {
+      "artifact_id": "<registered-scaffold_ustekinumab_3hmw_yaml-artifact-uuid>",
+      "path": "files/example/fab_scaffolds/ustekinumab.3hmw.yaml",
+      "media_type": "application/octet-stream"
+    },
+    "target_cif": {
+      "artifact_id": "<registered-target_cif-artifact-uuid>",
+      "path": "files/example/fab_targets/7uxq.cif",
+      "media_type": "application/octet-stream"
+    },
+    "design_yaml": {
+      "artifact_id": "<registered-design_yaml-artifact-uuid>",
+      "path": "files/example/fab_targets/pdl1.yaml",
+      "media_type": "application/octet-stream"
+    }
+  }
+}
