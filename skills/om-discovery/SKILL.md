@@ -8,7 +8,8 @@ description: >
   Adaptyv, A-Alpha Bio, and my genome are not ready; do not treat them as
   available. Use when connecting
   to https://agents.omtx.ai/mcp or the user mentions Om, OMTX, LULA, Discovery,
-  Hub, Diligence, ZenCloud, BoltzGen on Om, BindCraft2 on Om, or ordering molecules.
+  Hub, Diligence, ZenCloud, BoltzGen on Om, BindCraft2 on Om, merging top hits
+  across a multi-job LULA batch, or ordering molecules.
 ---
 
 # Om Discovery
@@ -465,6 +466,20 @@ fields for a scientist reviewing the run.
 `artifacts_finalize_upload`, `artifacts_get`, `jobs_history`,
 `jobs_status`, `jobs_wait`, `jobs_export_json`, `jobs_get_artifact_url`,
 `jobs_download_artifact`, `retry_job`
+
+A large LULA-2 scoring request (enough molecules to exceed one shard's
+capacity) does not come back as a single job. It fans out into many jobs
+that share one `metadata.batch_id`, and every per-job tool here
+(`jobs_status`, `jobs_get_top_scored_molecules`, `jobs_export_json`) is
+scoped to one job_id only — none of them compute a batch-wide winner. If the
+user asks for "the top hit" or a ranked export of a batch like that, do
+**not** call a ranking tool once per job_id in this conversation: with
+dozens or hundreds of shards that floods the context and can stall the
+session entirely. Instead read
+[references/lula-batch-top-hits/lula-batch-top-hits.md](references/lula-batch-top-hits/lula-batch-top-hits.md)
+and run the provided example script, which merges each shard's small,
+already-ranked `top_hits.parquet` outside the conversation and reports back
+only the final ranked result and its file path.
 
 ---
 
