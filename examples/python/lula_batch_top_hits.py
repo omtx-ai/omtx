@@ -161,13 +161,16 @@ def merge_batch(client: OmClient, batch_id: str, top_n: int, history_pages: int,
     print(f"Score column (from scored_shards_manifest.json): {score_column}")
 
     frames: list[pl.DataFrame] = []
+    shard_counts: dict[str, int] = {}
     errors: list[str] = []
     with ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_CONCURRENCY) as pool:
         futures = {pool.submit(fetch_top_hits, client, job): job for job in completed}
         for future in as_completed(futures):
+            job = futures[future]
             frame, error = future.result()
             if frame is not None:
                 frames.append(frame)
+                shard_counts[job["job_id"]] = frame.height
             if error:
                 errors.append(error)
 
@@ -178,7 +181,6 @@ def merge_batch(client: OmClient, batch_id: str, top_n: int, history_pages: int,
     if not frames:
         raise SystemExit("No top_hits.parquet could be fetched for any completed job.")
 
-    shard_counts = {f["_source_job_id"][0]: f.height for f in frames}
     merged = pl.concat(frames, how="diagonal_relaxed")
     ranked = merged.sort(score_column, descending=True).head(top_n)
 
