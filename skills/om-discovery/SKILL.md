@@ -469,7 +469,9 @@ fields for a scientist reviewing the run.
 
 A large LULA-2 scoring request (enough molecules to exceed one shard's
 capacity) does not come back as a single job. It fans out into many jobs
-that share one `metadata.batch_id`, and every per-job tool here
+that share one batch identity (recorded on each job's own
+`scored_shards_manifest.json`, not in `/v2/jobs/history`'s `metadata`), and
+every per-job tool here
 (`jobs_status`, `jobs_get_top_scored_molecules`, `jobs_export_json`) is
 scoped to one job_id only — none of them compute a batch-wide winner. If the
 user asks for "the top hit" or a ranked export of a batch like that, do

@@ -1,14 +1,20 @@
 """Merge pre-ranked top_hits.parquet files across every job in one LULA-2 batch.
 
 A LULA-2 scoring request that exceeds one shard's molecule capacity fans out
-into many independent jobs that share one `metadata.batch_id`. No per-job
-tool (status, top-scored-molecules, export) computes a batch-wide winner, so
-getting "the top hit" for a batch means merging each shard's own ranked
-result yourself. Do this with a script, not by calling a ranking tool once
-per job_id in an agent conversation -- with dozens or hundreds of shards that
-floods the conversation and can stall the session. See
+into many independent jobs. No per-job tool (status, top-scored-molecules,
+export) computes a batch-wide winner, so getting "the top hit" for a batch
+means merging each shard's own ranked result yourself. Do this with a
+script, not by calling a ranking tool once per job_id in an agent
+conversation -- with dozens or hundreds of shards that floods the
+conversation and can stall the session. See
 skills/om-discovery/references/lula-batch-top-hits/lula-batch-top-hits.md
 for the full explanation.
+
+/v2/jobs/history's own `metadata` field does not carry a batch_id -- that is
+only returned once, in the original launch response. Each shard job's own
+accessible_space/scored_shards_manifest.json records its batch identity
+directly instead (batch_id, job_index, job_count, total_molecules), so this
+script reads batch membership from there.
 
 Every completed shard job already writes a small, pre-ranked
 accessible_space/top_hits.parquet (its own locally-ranked retained hits,
@@ -18,7 +24,7 @@ the small, already-ranked file from each shard and does one final sort --
 nothing is re-ranked from scratch.
 
 Install first:
-    pip install omtx polars
+    pip install omtx polars requests
 
 Set your own API key (this can only see jobs your own account owns):
     export OMTX_API_KEY="your-api-key"
@@ -42,6 +48,7 @@ from pathlib import Path
 from typing import Any
 
 import polars as pl
+import requests
 
 from omtx import OmClient
 
@@ -49,6 +56,9 @@ TOP_HITS_ARTIFACT = "accessible_space/top_hits.parquet"
 MANIFEST_ARTIFACT = "accessible_space/scored_shards_manifest.json"
 HISTORY_PAGE_LIMIT = 100
 MAX_DOWNLOAD_CONCURRENCY = 8
+# The job-level lifecycle status (NOT the manifest's own internal "status"
+# field, which records something different and is commonly "completed").
+JOB_STATUS_SUCCEEDED = "succeeded"
 
 
 def fetch_history(client: OmClient, max_pages: int) -> list[dict[str, Any]]:
@@ -64,21 +74,65 @@ def fetch_history(client: OmClient, max_pages: int) -> list[dict[str, Any]]:
     return jobs
 
 
-def group_by_batch(jobs: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+def fetch_manifest(client: OmClient, job_id: str) -> tuple[dict[str, Any] | None, str | None]:
+    try:
+        info = client.jobs.get_artifact_url(job_id, MANIFEST_ARTIFACT)
+        content = requests.get(info["download_url"], timeout=60).content
+        return json.loads(content), None
+    except Exception as exc:  # noqa: BLE001 - report, don't crash the whole scan
+        return None, f"{job_id}: {exc}"
+
+
+def group_by_batch(
+    client: OmClient, jobs: list[dict[str, Any]]
+) -> tuple[dict[str, list[dict[str, Any]]], dict[str, dict[str, Any]], list[str]]:
+    """Group lula2.score jobs by batch_id, read from each job's own manifest.
+
+    /v2/jobs/history's `metadata` does not carry a batch_id (that is only
+    returned once, in the original launch response), so this fetches each
+    candidate job's small scored_shards_manifest.json and reads batch_id,
+    job_count and total_molecules from its `batch` object instead.
+
+    Returns (batches, batch_info_by_id, manifest_fetch_errors).
+    """
+    candidates = [j for j in jobs if j.get("job_type") == "lula2.score"]
     batches: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for job in jobs:
-        if job.get("job_type") != "lula2.score":
-            continue
-        metadata = job.get("metadata") or {}
-        batch_id = metadata.get("batch_id")
-        if batch_id:
+    batch_info: dict[str, dict[str, Any]] = {}
+    errors: list[str] = []
+    with ThreadPoolExecutor(max_workers=MAX_DOWNLOAD_CONCURRENCY) as pool:
+        futures = {
+            pool.submit(fetch_manifest, client, j["job_id"]): j for j in candidates
+        }
+        for future in as_completed(futures):
+            job = futures[future]
+            manifest, error = future.result()
+            if error:
+                errors.append(error)
+                continue
+            batch = (manifest or {}).get("batch") or {}
+            batch_id = batch.get("batch_id")
+            if not batch_id:
+                continue
             batches[batch_id].append(job)
-    return batches
+            batch_info.setdefault(
+                batch_id,
+                {
+                    "job_count": batch.get("job_count"),
+                    "total_molecules": batch.get("total_molecules"),
+                },
+            )
+    return batches, batch_info, errors
 
 
 def print_batch_list(client: OmClient, history_pages: int) -> None:
     jobs = fetch_history(client, history_pages)
-    batches = group_by_batch(jobs)
+    batches, batch_info, errors = group_by_batch(client, jobs)
+    if errors:
+        print(f"{len(errors)} job(s) failed a manifest lookup while scanning:")
+        for e in errors[:10]:
+            print(f"    {e}")
+        if len(errors) > 10:
+            print(f"    ... and {len(errors) - 10} more")
     if not batches:
         print("No LULA-2 batches found in the scanned history window.")
         return
@@ -90,19 +144,26 @@ def print_batch_list(client: OmClient, history_pages: int) -> None:
         statuses: dict[str, int] = defaultdict(int)
         for j in items:
             statuses[j.get("status") or "unknown"] += 1
+        expected_job_count = batch_info.get(batch_id, {}).get("job_count")
         rows.append(
             {
                 "batch_id": batch_id,
                 "label": label,
                 "job_count": len(items),
+                "expected_job_count": expected_job_count,
                 "statuses": dict(statuses),
                 "most_recent": max((j.get("created_at") or "" for j in items), default=""),
             }
         )
     rows.sort(key=lambda r: r["most_recent"], reverse=True)
     for row in rows:
+        coverage = (
+            f"{row['job_count']}/{row['expected_job_count']}"
+            if row["expected_job_count"]
+            else str(row["job_count"])
+        )
         print(
-            f"  batch_id={row['batch_id']}  jobs={row['job_count']}  "
+            f"  batch_id={row['batch_id']}  jobs_found={coverage}  "
             f"statuses={row['statuses']}  label={row['label']!r}  "
             f"most_recent={row['most_recent']}"
         )
@@ -110,11 +171,9 @@ def print_batch_list(client: OmClient, history_pages: int) -> None:
 
 
 def fetch_score_column(client: OmClient, job_id: str) -> str:
-    info = client.jobs.get_artifact_url(job_id, MANIFEST_ARTIFACT)
-    import requests
-
-    content = requests.get(info["download_url"], timeout=60).content
-    manifest = json.loads(content)
+    manifest, error = fetch_manifest(client, job_id)
+    if error or not manifest:
+        raise RuntimeError(f"Could not fetch manifest for job {job_id}: {error}")
     score_column = manifest.get("score_column")
     if not score_column:
         raise RuntimeError(f"No score_column in manifest for job {job_id}")
@@ -122,13 +181,16 @@ def fetch_score_column(client: OmClient, job_id: str) -> str:
 
 
 def fetch_top_hits(client: OmClient, job: dict[str, Any]) -> tuple[pl.DataFrame | None, str | None]:
-    import requests
-
     job_id = job["job_id"]
     try:
         info = client.jobs.get_artifact_url(job_id, TOP_HITS_ARTIFACT)
         content = requests.get(info["download_url"], timeout=60).content
         frame = pl.read_parquet(io.BytesIO(content))
+        if "source_metadata" in frame.columns:
+            # source_metadata is a nested struct; CSV cannot hold it directly.
+            frame = frame.with_columns(
+                pl.col("source_metadata").struct.json_encode().alias("source_metadata")
+            )
         frame = frame.with_columns(pl.lit(job_id).alias("_source_job_id"))
         return frame, None
     except Exception as exc:  # noqa: BLE001 - report, don't crash the whole merge
@@ -136,26 +198,48 @@ def fetch_top_hits(client: OmClient, job: dict[str, Any]) -> tuple[pl.DataFrame 
 
 
 def merge_batch(client: OmClient, batch_id: str, top_n: int, history_pages: int, out_dir: str) -> None:
-    jobs = group_by_batch(fetch_history(client, history_pages)).get(batch_id, [])
+    batches, batch_info, manifest_errors = group_by_batch(
+        client, fetch_history(client, history_pages)
+    )
+    jobs = batches.get(batch_id, [])
     if not jobs:
         raise SystemExit(
             f"No jobs found for batch_id={batch_id} in the scanned history window. "
             "Try a larger --history-pages, or confirm the batch_id."
         )
+    if manifest_errors:
+        print(
+            f"Note: {len(manifest_errors)} other job(s) in the scanned window failed "
+            "a manifest lookup during batch discovery and could not be checked for "
+            "membership in this batch -- if this batch looks incomplete, one of these "
+            "may actually belong to it:"
+        )
+        for e in manifest_errors[:10]:
+            print(f"    {e}")
+        if len(manifest_errors) > 10:
+            print(f"    ... and {len(manifest_errors) - 10} more")
 
-    completed = [j for j in jobs if (j.get("status") or "").lower() == "completed"]
-    incomplete = [j for j in jobs if (j.get("status") or "").lower() != "completed"]
+    expected_job_count = batch_info.get(batch_id, {}).get("job_count")
+    completed = [j for j in jobs if (j.get("status") or "").lower() == JOB_STATUS_SUCCEEDED]
+    incomplete = [j for j in jobs if (j.get("status") or "").lower() != JOB_STATUS_SUCCEEDED]
     print(
-        f"Batch {batch_id}: {len(jobs)} jobs total, {len(completed)} completed, "
-        f"{len(incomplete)} not completed."
+        f"Batch {batch_id}: {len(jobs)} jobs found, {len(completed)} succeeded, "
+        f"{len(incomplete)} not succeeded."
     )
+    if expected_job_count and len(jobs) != expected_job_count:
+        print(
+            f"WARNING: this batch expects {expected_job_count} total jobs (per its own "
+            f"manifest), but only {len(jobs)} were found in the scanned "
+            f"--history-pages window. This merge covers an INCOMPLETE batch -- increase "
+            f"--history-pages, or confirm no shard jobs were deleted/excluded."
+        )
     if incomplete:
         print(
-            "  Excluded from merge (not completed): "
+            "  Excluded from merge (not succeeded): "
             + ", ".join(f"{j['job_id']}={j.get('status')}" for j in incomplete)
         )
     if not completed:
-        raise SystemExit("No completed jobs to merge.")
+        raise SystemExit("No succeeded jobs to merge.")
 
     score_column = fetch_score_column(client, completed[0]["job_id"])
     print(f"Score column (from scored_shards_manifest.json): {score_column}")

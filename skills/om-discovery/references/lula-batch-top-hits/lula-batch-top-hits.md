@@ -2,10 +2,16 @@
 
 A LULA-2 scoring request that exceeds one shard's molecule capacity does not
 come back as a single job. The gateway fans it out into many independent
-jobs that share one `metadata.batch_id`. Every per-job tool — `jobs_status`,
+jobs that share one batch identity. Every per-job tool — `jobs_status`,
 `jobs_get_top_scored_molecules`, `jobs_export_json` — is scoped to exactly
 one job_id. None of them verify sibling completion or compute a batch-wide
 winner; `jobs_get_top_scored_molecules`'s own description says so directly.
+
+Note: the batch ID is **not** available on `/v2/jobs/history` — `metadata`
+there only carries artifact listings. It is returned once, in the original
+launch response, and separately recorded on each shard's own
+`scored_shards_manifest.json` (see below) — that manifest is the reliable
+way to recover batch membership after the fact.
 
 If you need "the top hit" (or a ranked export) for a batch like that, do not
 call a ranking tool once per job_id inside this conversation. With dozens or
@@ -25,7 +31,7 @@ and doing one final sort. Nothing needs to be re-ranked from scratch.
 ## Run it as a script, not as tool calls in chat
 
 Use [`examples/python/lula_batch_top_hits.py`](../../../examples/python/lula_batch_top_hits.py).
-It requires `pip install omtx polars` and `OMTX_API_KEY` set to the batch
+It requires `pip install omtx polars requests` and `OMTX_API_KEY` set to the batch
 owner's own key (never a different account's key — the script, like every
 job tool, can only see jobs the key's account owns).
 
@@ -40,13 +46,19 @@ breakdown, and a human-readable label) to pick from.
 
 The script:
 
-1. Pages `jobs.history()` to find every job_id sharing the target
-   `batch_id` via each job's own `metadata`.
-2. Reads the shared score column name from one shard's small
-   `scored_shards_manifest.json`.
-3. Downloads every completed shard's `top_hits.parquet` concurrently via
-   `jobs.get_artifact_url()`.
-4. Concatenates, re-sorts locally, and writes one merged top-N CSV.
+1. Pages `jobs.history()` for LULA-2 jobs, then fetches each one's small
+   `scored_shards_manifest.json` (concurrently) to read its `batch_id`,
+   `job_index`, `job_count` and `total_molecules` — `/v2/jobs/history`'s own
+   `metadata` does not carry a batch_id.
+2. Compares the jobs found for the target `batch_id` against that batch's
+   own recorded `job_count` and warns explicitly if the batch looks
+   incomplete (fewer jobs found than expected), rather than silently merging
+   a partial batch.
+3. Filters to jobs whose status is `succeeded`.
+4. Downloads every succeeded shard's `top_hits.parquet` concurrently via
+   `jobs.get_artifact_url()`, and flattens the `source_metadata` struct
+   column (CSV cannot hold nested data) before writing it out.
+5. Concatenates, re-sorts locally, and writes one merged top-N CSV.
 
 Report back to the user only the printed summary (shards merged, candidate
 rows, top score, output file path) — not the raw per-shard tool responses
