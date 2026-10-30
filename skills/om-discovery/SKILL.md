@@ -8,7 +8,7 @@ description: >
   Adaptyv, A-Alpha Bio, and my genome are not ready; do not treat them as
   available. Use when connecting
   to https://agents.omtx.ai/mcp or the user mentions Om, OMTX, LULA, Discovery,
-  Hub, Diligence, ZenCloud, or ordering molecules.
+  Hub, Diligence, ZenCloud, BindCraft2 on Om, or ordering molecules.
 ---
 
 # Om Discovery
@@ -554,6 +554,13 @@ confirmation before reserving, then run it and validate the returned files.
 Use `artifacts_upload_bytes` for required file inputs and `credits_get` for
 the current balance. There is no separate quote, stop, or extend action.
 
+Before quoting a BindCraft2 design, or handling its controls, memory failures,
+results or continuation, read
+[references/zencloud-bindcraft2.md](references/zencloud-bindcraft2.md).
+It covers total target-plus-binder size, bounded OOM recovery and reviewed
+cropping, and distinguishes functional tests from binder discovery. Observed
+execution sizes are not guaranteed capacity limits or proof of accepted designs.
+
 **Do this**
 
 1. **Describe first.** Read the active image's applications, parameter schema,
@@ -561,6 +568,8 @@ the current balance. There is no separate quote, stop, or extend action.
    and artifact retention policy. Use only an advertised application and its
    typed inputs. Do not infer support from the image name or copy a remembered
    application list, price, or reservation limit.
+   When the user names an image, pass `image` to `describe` to narrow the
+   response. An absent or inaccessible image is not an available paid path.
 2. **Choose a session.** Reuse a known owned, ready session when the user wants
    to continue there. If the response lists open sessions, or the user wants
    several workloads, resolve whether to share a session sequentially or open
@@ -590,6 +599,11 @@ the current balance. There is no separate quote, stop, or extend action.
    `action=get` with both IDs through its terminal state. Only one invocation
    runs per session; `session_busy` is not a queue. Wait for the current work
    before submitting the next invocation on that session.
+   Read `run_input_schema` for the full envelope and `parameter_schema` for
+   image parameters. Each named file slot binds a registered artifact UUID to
+   a `files/` path. A chat/workspace upload ID is not that UUID; bytes and
+   SHA-256 are server-resolved. Examples must retain `action`, `session_id`,
+   `parameters`, and `files`, with explicit placeholders for unknown IDs.
 6. **Validate results.** For `completed`, retrieve the authorized output
    artifact while retention permits. Check archive bytes and SHA-256 against
    the response, then file sizes and hashes against the output manifest.
