@@ -12,8 +12,9 @@ recipe.
   binder/non-binder pools, explicit pools, raw shard URLs, and molecule previews.
 - [Diligence Jobs](diligence-jobs.md): submit diligence jobs, poll status, handle
   terminal states, and use retry-safe idempotency keys.
-- [Hub Jobs And Artifacts](hub-jobs-and-artifacts.md): upload artifacts, launch
-  active Hub jobs, poll results, and request signed artifact URLs.
+- [Historical Hub Jobs And Artifacts](hub-jobs-and-artifacts.md): inspect existing
+  jobs and request authorized result URLs. New execution uses
+  [ZenCloud](../skills/om-discovery/SKILL.md#case-19--zencloud-scientific-sessions).
 
 ## Best Practices
 

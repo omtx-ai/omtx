@@ -96,29 +96,17 @@ with OmClient() as client:
 For result-specific detail routes, `client.jobs.wait(...)` also supports a
 `result_endpoint` template such as `/v2/jobs/deep-diligence/{job_id}`.
 
-## Hub Job
+## Scientific Models And Historical Hub Results
 
-For active Hub models, use `client.hub.submit(...)` or a typed helper when one
-exists.
+Use [ZenCloud through Om MCP](../skills/om-discovery/SKILL.md#case-19--zencloud-scientific-sessions)
+for new structure, docking, and design work. Describe the selected image,
+review its current input contract, and confirm the full reservation price and
+term before starting.
 
-```python
-from omtx import OmClient
-
-with OmClient() as client:
-    job = client.hub.submit(
-        job_type="hub.boltz2",
-        payload={
-            "protein_sequence": "MSTNPKPQRKTKRNTNRRPQDVKFPGG",
-            "ligand_smiles": "CCO",
-        },
-        idempotency_key="hub-boltz2-demo-001",
-    )
-
-    status = client.jobs.wait(job["job_id"], poll_interval=5, timeout=3600)
-    print(status["status"])
-```
-
-For artifact-backed workflows, upload files first with `client.artifacts.*`.
+Hub is retired for new execution. An older SDK may still expose Hub submission
+methods; do not use them for new work or replacement attempts. Existing job
+status and authorized result retrieval remain supported. See
+[Historical Hub Jobs And Artifacts](../tutorials/hub-jobs-and-artifacts.md).
 
 ## Local LULA-1
 

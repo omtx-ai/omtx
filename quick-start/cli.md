@@ -12,8 +12,10 @@ pip install "omtx[lula]>=2.0.20"
 
 Hugging Face login is required for gated LULA weights.
 
-For API, hosted scoring, Hub jobs, and artifact workflows, use the Python SDK
-or direct API quickstarts.
+For API, hosted scoring, and artifact workflows, use the Python SDK or direct
+API quickstarts. For new structure, docking, and design work, use
+[ZenCloud through Om MCP](../skills/om-discovery/SKILL.md#case-19--zencloud-scientific-sessions).
+Hub is retired for new execution.
 
 ## Command Families
 
