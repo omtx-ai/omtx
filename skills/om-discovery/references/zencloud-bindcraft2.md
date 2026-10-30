@@ -58,6 +58,89 @@ One failed trajectory does not establish a discovery hit rate. Preserve the
 native acceptance criteria for a baseline search; report any deliberately
 changed scientific recipe or thresholds as a separate experiment.
 
+## Check complex size before reserving or retrying
+
+GPU memory exhaustion concerns the size and settings of the modeled complex;
+it is not evidence that a particular amino-acid type is incompatible. Check
+sequence alphabet and submission rules separately from compute capacity.
+
+Before quoting a design, count all selected target residues plus every modeled
+binder/scaffold chain and copy, for each complex/state. For a binder length
+range, show the total range and its upper end. Consider the selected modality,
+model settings, padding and worker concurrency; residue count alone does not
+predict peak memory. Read any declared limits from the live image contract.
+No declared maximum is not a promise of unlimited capacity.
+
+**Dated execution evidence, not a recommended maximum.** On October 29, 2026,
+image release `0.1.0-prototype.4` (native BindCraft2 `1.0.1`) on the advertised
+`base-gpu` offering ran these single-trajectory, `binder` / `benchmark` /
+`forced_targeting` workloads:
+
+| Target + binder residues | Outcome |
+| --- | --- |
+| 194 + 62 = 256 | Completed through hardening; rejected before sequence refolding |
+| 192 + 70 = 262 | Completed through hardening; rejected before sequence refolding |
+| 385 + requested 60–100 = requested 445–485 | GPU memory exhausted; actual sampled binder length unavailable |
+
+Both completed exports reported one native attempt with no OOM recovery and
+zero accepted designs. Neither proves that sequence generation, refolding or a
+complete successful discovery pipeline fits at that size. Do not turn 262 into
+a safe ceiling, or the failed range into a universal rejection threshold.
+This evidence does not transfer automatically to another image, release,
+modality or scientific recipe. Use matching full-stage measurements when
+available; describe unmeasured capacity as uncertain before paid execution.
+
+**Follow-up with explicit chunking (October 30 UTC / October 29 Pacific).**
+A matched MCP check repeated each pMHC recipe, changing only `subbatch_size` to
+1. The full 385-target-residue request with a 60–100-residue binder still failed
+with GPU memory exhaustion. Its failure receipt did not return a sampled binder
+length or resolved settings; report the explicit request and failure without
+inventing those missing measurements.
+
+The crop completed with 192 target + 70 binder = 262 residues. Its export
+verified initial/final chunk size 1, one native attempt and no OOM recovery.
+Runtime was 67.3 minutes, versus 38.6 minutes for the earlier `auto` crop. Both
+were rejected at hardening, with zero candidates scored and zero accepted;
+neither reached sequence refolding. All eight new exported files passed
+size/hash verification. The native scores differed between runs, so unchanged
+seed and scientific inputs do not imply bitwise-identical predictions.
+
+Explicit chunk size 1 did not rescue the tested full recipe and took longer in
+the cropped comparison. Keep `auto` as the ordinary baseline where it fits;
+do not make 1 a universal default, promise this timing difference for other
+jobs, or turn 262 into a guaranteed full-pipeline capacity limit.
+
+For an OOM:
+
+- First resolve the existing invocation's terminal state. If the image returns
+  memory-recovery metadata, report what it actually did. Do not assume an
+  unreported retry happened or enqueue duplicate work while it is recovering.
+- Use only memory controls supported by the selected release. `subbatch_size`
+  chunks calculations; a smaller chunk may reduce memory at a runtime cost.
+  An automatic setting may already have chosen its minimum. Do not promise
+  success from forcing 1, or recommend newer upstream flags without verifying
+  support. A smaller trajectory count caps search work; it does not shrink a
+  single modeled complex. Keep scientific acceptance thresholds unchanged.
+- After a terminal OOM, explain a concrete supported change before another
+  attempt. Reuse a ready owned session when it has enough time and the retry
+  fits the approved scope. Include recovery and export time in the remaining
+  term. A replacement reservation needs its own quote and confirmation; do not
+  repeat an unchanged failed workload or silently spend another term.
+- Cropping is a scientific change: review the exact retained chains/residues,
+  preserve the epitope and necessary structural context, and obtain approval
+  if that construct change is outside the authorized experiment. Keep a source
+  to export residue map, including any chain relabelling. Never silently trim
+  a protein to fit an invented numerical limit.
+- Before recommending a design made against a crop, inspect it in the full
+  intended assay complex for clashes and accessibility, including omitted
+  domains, partners and relevant glycans, and complete the planned specificity
+  controls. If those checks cannot run, leave the candidate unresolved. A
+  larger-memory offering is an alternative only if the live catalog actually
+  provides it and its use is authorized.
+
+The [upstream settings reference](https://github.com/PacesaLab/BindCraft2/blob/main/docs/source/reference.md#output-and-execution-settings)
+explains memory controls, but can differ from the installed release.
+
 ## Complete illustrative run request
 
 Verify this example against the selected release's live schema. It assumes
