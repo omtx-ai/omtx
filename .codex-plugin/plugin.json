@@ -1,6 +1,6 @@
 {
   "name": "om-discovery",
-  "version": "0.3.0",
+  "version": "0.3.4",
   "description": "Hosted Om MCP plus the Om Discovery playbook for LULA, Discovery, Discovery Challenges, Hub, Diligence, Accessible Space, molecule orders, and ZenCloud scientific sessions.",
   "author": {
     "name": "Om Therapeutics",
@@ -9,7 +9,12 @@
   },
   "homepage": "https://www.omtx.ai/docs/api/mcp/overview",
   "license": "Apache-2.0",
-  "keywords": ["mcp", "om", "lula", "drug-discovery"],
+  "keywords": [
+    "mcp",
+    "om",
+    "lula",
+    "drug-discovery"
+  ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {

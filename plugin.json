@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "om-discovery",
-  "version": "0.3.0",
+  "version": "0.3.4",
   "description": "Hosted Om MCP plus the Om Discovery playbook for LULA, Discovery, Discovery Challenges, Hub, Diligence, Accessible Space, molecule orders, and ZenCloud scientific sessions.",
   "author": {
     "name": "Om Therapeutics",

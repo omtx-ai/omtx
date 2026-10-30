@@ -8,7 +8,8 @@ description: >
   Adaptyv, A-Alpha Bio, and my genome are not ready; do not treat them as
   available. Use when connecting
   to https://agents.omtx.ai/mcp or the user mentions Om, OMTX, LULA, Discovery,
-  Hub, Diligence, ZenCloud, BindCraft2 on Om, or ordering molecules.
+  Hub, Diligence, ZenCloud, BoltzGen on Om, BindCraft2 on Om, merging top hits
+  across a multi-job LULA batch, or ordering molecules.
 ---
 
 # Om Discovery
@@ -81,11 +82,11 @@ Keep these rules for every paid path:
 | Product | What it is | Start with |
 | --- | --- | --- |
 | LULA | Score a protein against Om Accessible Space, or one SMILES across a protein panel | `lula2_score`, `lula2_proteome_score`, `lula2_residue_map` |
-| Discovery | Same website program: LULA ranks space, Om runs AS-MS, data back in weeks | `discovery_launch_quote`, `discovery_launch_order`, `discovery_launch_get` |
+| Discovery | Same website program: LULA ranks space, Om runs AS-MS, data back in weeks | `discovery_checkout_quote`, `discovery_checkout_order`, `discovery_get` |
 | Discovery Challenges | Submit om_50 molecules for wet-lab validation / payout challenges | `discovery_challenges_list`, `discovery_challenge_validate`, `discovery_challenge_submit` |
 | Order molecules | Ship selected Om Accessible Space hits with Wallet Credits | `molecule_fulfillment_pricing`, `molecule_fulfillment_order` |
 | Hub | Structure, docking, design (Boltz-2 and other live models) | `hub_models_catalog`, then `hub_boltz2` / `hub_submit` |
-| ZenCloud | Reserve a fixed term for a cataloged scientific image, then run typed workloads | `zencloud` with `action=describe`; quote and confirm before `start` |
+| ZenCloud | Reserve a fixed term for a cataloged scientific image, then run typed workloads | `zencloud_status` with `action=describe`; quote and confirm before `zencloud(action=start)` |
 | Diligence | Target landscape with citations | `diligence_search`, then gather / deep only if needed |
 | Accessible Space | Fetch or export Om molecules without scoring | `molecule_accessible_space`, `molecule_accessible_space_export` |
 | Data Access | Account Generated Data binders / non-binders | `datasets_catalog`, `binders_get_ranked_molecules` |
@@ -108,7 +109,7 @@ After Hello World, unless the user names a later step:
 8. If they ask for Adaptyv, A-Alpha Bio, or my genome, say those are not ready.
 
 Protein sequences for scoring and Discovery: methionine-start amino acid
-sequence. Discovery Launch sequences are typically 300–1500 aa starting with M.
+sequence. Follow the selected tool’s current sequence bounds.
 
 ---
 
@@ -154,7 +155,8 @@ Also map hotspot residues for the top hit with lula2_residue_map.
 2. `lula2_score` with `source=om`. Use the named Accessible Space tier.
    Default **Small** if they do not name a tier. Use LULA-1 (`lula1_score`)
    only if they ask for LULA-1.
-3. `jobs_wait`, then `jobs_get_top_scored_molecules`.
+3. Use the bounded wait loop in Case 14 with the accepted job ID, then
+   `jobs_get_top_scored_molecules` after success.
 4. `lula2_residue_map` on the top hit (protein sequence + that SMILES) if they
    asked, or after returning ranked hits.
 5. Nothing is ordered yet.
@@ -254,28 +256,47 @@ their labels instead of base LULA weights.
 
 ## Case 6 — Submit a Discovery program
 
-Same product as the website: LULA ranks Om Accessible Space, Om runs AS-MS,
-binder and non-binder data come back in weeks.
+Use the checkout tools for a new review. They quote a defined molecule
+selection and destination before the customer commits Wallet Credits.
 
 **You say**
 
 ```text
 Quote a Discovery program for this protein: 10 molecules, Small space,
-AS-MS included. Show Molecules / Validation / Total Wallet Credits.
+AS-MS included. Show the selection, validation, and total Wallet Credits.
 Do not place the order until I confirm.
 
-[paste a 300–1500 aa sequence starting with M]
+[paste the protein sequence]
 ```
 
-**Tools:** `discovery_launch_quote`, `discovery_launch_order`,
-`discovery_launch_get`, `credits_get`
+**Tools:** `discovery_checkout_quote`, `discovery_checkout_order`,
+`discovery_get`, `credits_get`
 
 **Do this**
 
-1. Quote. Show Molecules, Validation, and Total **from the quote tool**.
-   Do not reuse stale example numbers.
-2. `discovery_launch_order` only after they confirm the total.
-3. `discovery_launch_get` for status after it is placed.
+1. Choose the requested selection and destination. Use
+   `candidate_source="om_ranked"` with the protein, space and molecule count
+   for Om-ranked candidates. For an explicit customer selection sent to AS-MS,
+   use `candidate_source="customer_selected"` and the exact selected SMILES.
+   Read the current schema for supported assay values and required inputs.
+2. Quote the exact inputs. Show the returned selection, destination, material
+   terms, price components and `total_credits`. Preserve `quote_fingerprint`;
+   do not reuse remembered prices or substitute a different selection.
+3. After the user confirms those terms and total, call
+   `discovery_checkout_order` with the same inputs and fingerprint. Keep one
+   stable `idempotency_key` for this logical order, including retries after a
+   lost response. If the quote is stale or the inputs change, quote again and
+   obtain confirmation of the revised terms before ordering.
+4. Use `discovery_get` with the accepted order ID for status. A timeout is an
+   unknown outcome; recover the original order before creating another.
+
+`assay_type="none"` on an Om-ranked checkout selects physical delivery and
+requires a confirmed shipping address at order time. Shipping an explicit list
+of already-selected hits uses Molecule Fulfillment (Case 4). AS-MS validation
+data and physical shipment are distinct destinations.
+
+Use `discovery_launch_*` only when explicitly continuing a legacy launch;
+they are not the starting point for a new checkout review.
 
 ---
 
@@ -466,6 +487,34 @@ fields for a scientist reviewing the run.
 `jobs_status`, `jobs_wait`, `jobs_export_json`, `jobs_get_artifact_url`,
 `jobs_download_artifact`, `retry_job`
 
+For every asynchronous job in this playbook, retain the accepted `job_id` and
+call `jobs_wait(job_id=..., timeout_s=25)`. If it returns `wait_timeout` /
+`wait_status="timed_out"`, the job is still running or its latest state is not
+yet known: repeat the bounded wait with the **same** ID. A wait timeout does
+not cancel a job and is not a reason to submit or retry the workload. Use
+`jobs_status` if a client cannot complete a wait call; respect any returned
+polling interval. Continue until the job reaches a terminal state or the
+user's agreed observation deadline, then retrieve results only after success.
+Report failed or cancelled work from its actual status. At an observation
+deadline, report the latest state and retained ID so monitoring can resume.
+Do not request one multi-minute or multi-hour MCP wait.
+
+A large LULA-2 scoring request (enough molecules to exceed one shard's
+capacity) does not come back as a single job. It fans out into many jobs
+that share one batch identity (recorded on each job's own
+`scored_shards_manifest.json`, not in `/v2/jobs/history`'s `metadata`), and
+every per-job tool here
+(`jobs_status`, `jobs_get_top_scored_molecules`, `jobs_export_json`) is
+scoped to one job_id only — none of them compute a batch-wide winner. If the
+user asks for "the top hit" or a ranked export of a batch like that, do
+**not** call a ranking tool once per job_id in this conversation: with
+dozens or hundreds of shards that floods the context and can stall the
+session entirely. Instead read
+[references/lula-batch-top-hits/lula-batch-top-hits.md](references/lula-batch-top-hits/lula-batch-top-hits.md)
+and run the provided example script, which merges each shard's small,
+already-ranked `top_hits.parquet` outside the conversation and reports back
+only the final ranked result and its file path.
+
 ---
 
 ## Case 15 — Vibe / discovery video
@@ -550,7 +599,8 @@ Show the complete Wallet Credits price and fixed-term policy. Wait for my
 confirmation before reserving, then run it and validate the returned files.
 ```
 
-**Tools:** `zencloud` with `action=describe`, `start`, `run`, or `get`.
+**Tools:** `zencloud_status` for `describe` and `get`; `zencloud` for `start`
+and `run`.
 Use `artifacts_upload_bytes` for required file inputs and `credits_get` for
 the current balance. There is no separate quote, stop, or extend action.
 
@@ -561,6 +611,11 @@ It covers total target-plus-binder size, bounded OOM recovery and reviewed
 cropping, and distinguishes functional tests from binder discovery. Observed
 execution sizes are not guaranteed capacity limits or proof of accepted designs.
 
+For BoltzGen on rented compute, read
+[references/boltzgen/zencloud-boltzgen.md](references/boltzgen/zencloud-boltzgen.md).
+It includes three vetted starting examples, complete run templates and input
+manifests while preserving customer control over scientific settings.
+
 **Do this**
 
 1. **Describe first.** Read the active image's applications, parameter schema,
@@ -568,8 +623,11 @@ execution sizes are not guaranteed capacity limits or proof of accepted designs.
    and artifact retention policy. Use only an advertised application and its
    typed inputs. Do not infer support from the image name or copy a remembered
    application list, price, or reservation limit.
-   When the user names an image, pass `image` to `describe` to narrow the
-   response. An absent or inaccessible image is not an available paid path.
+   Use `zencloud_status(action="describe")` for catalog discovery, then
+   `zencloud_status(action="describe", image=...)` for the selected image’s
+   complete schemas and run guidance before preparing work. The catalog
+   summary omits parameter schemas. An absent or inaccessible image is not
+   an available paid path.
 2. **Choose a session.** Reuse a known owned, ready session when the user wants
    to continue there. If the response lists open sessions, or the user wants
    several workloads, resolve whether to share a session sequentially or open

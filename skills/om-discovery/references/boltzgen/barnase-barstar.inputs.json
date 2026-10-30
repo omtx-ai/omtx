@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "example": "barnase-barstar",
+  "design_file_path": "files/example/inverse_folding/1brs.yaml",
+  "description": "Source locations and frozen byte counts/checksums for the tested example. Verify before registering inputs; this manifest is not a ZenCloud run request.",
+  "files": [
+    {
+      "key": "structure_cif",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/inverse_folding/1brs.cif",
+      "path": "files/example/inverse_folding/1brs.cif",
+      "bytes": 553617,
+      "sha256": "1c98dcc3eac7ccb88657e3ab0f745121d7ddbd2fe11357c65dbaffdd5704f153",
+      "media_type": "application/octet-stream"
+    },
+    {
+      "key": "design_yaml",
+      "source_url": "https://raw.githubusercontent.com/HannesStark/boltzgen/31d9d9b9c72245b4ed6fe8742d6fbf4e1a3552a0/example/inverse_folding/1brs.yaml",
+      "path": "files/example/inverse_folding/1brs.yaml",
+      "bytes": 286,
+      "sha256": "cab0f1fb786d38af6e5a0327d6674182b2f25a38c2170ae1baa649e74245cf57",
+      "media_type": "application/octet-stream"
+    }
+  ]
+}
