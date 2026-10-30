@@ -1,50 +1,44 @@
-# Hub Artifact Workflow
+# Historical Hub Artifact Retrieval
 
-Use this recipe when a Hub job starts from an uploaded structure and returns
-artifacts you want to inspect or download.
+Use this recipe to retrieve an authorized result from an existing Hub job.
+For new model execution, follow
+[ZenCloud scientific sessions](../skills/om-discovery/SKILL.md#case-19--zencloud-scientific-sessions).
+Hub submission and replacement attempts are retired.
 
 ## Prerequisites
 
-- `pip install omtx`
-- `OMTX_API_KEY` set in your shell
-- A local structure file such as `target.pdb`
+- `pip install omtx` and `OMTX_API_KEY` in your environment.
+- An owned historical job ID.
+- An exact public artifact name from its result or a previously verified download.
 
-## Recipe
+## Retrieve The Existing Result
+
+Set `OM_JOB_ID` and `OM_PUBLIC_ARTIFACT_NAME` to those known values first.
+Do not substitute a guessed model-specific filename.
 
 ```python
+import os
+
 from omtx import OmClient
 
 with OmClient() as client:
-    artifact = client.artifacts.upload("target.pdb")
+    job_id = os.environ["OM_JOB_ID"]
+    status = client.jobs.status(job_id)
+    print("Job status:", status["status"])
 
-    job = client.hub.diffdock(
-        protein_artifact_id=artifact["artifact_id"],
-        ligand_smiles="CCO",
-        idempotency_key="diffdock-artifact-demo-001",
+    url_info = client.jobs.get_artifact_url(
+        job_id=job_id,
+        artifact_name=os.environ["OM_PUBLIC_ARTIFACT_NAME"],
     )
-
-    status = client.jobs.wait(
-        job["job_id"],
-        poll_interval=5,
-        timeout=3600,
-    )
-
-    print("Final status:", status["status"])
+    print(url_info["download_url"])
 ```
 
-## Retrieve A Large Result
+Signed URLs are short-lived. Request a fresh authorized link when needed, keep
+it private, and inspect the actual file before reporting successful delivery.
+A returned URL alone does not prove content integrity. Keep large artifacts in
+your approved compute/storage environment.
 
-```python
-url_info = client.jobs.get_artifact_url(
-    job_id=job["job_id"],
-    artifact_name="outputs/results.json",
-)
-print(url_info["download_url"])
-```
-
-## Notes
-
-- Use `client.artifacts.upload_via_signed_url(...)` for larger uploads.
-- Use `client.hub.submit(job_type="hub.<model>", payload={...})` for active
-  models that do not have a typed helper in your installed SDK version.
-- Signed result URLs are short-lived; request them when you are ready to fetch.
+An empty artifact list alone does not establish that a known named download is
+unavailable. If the public filename is unknown or the reader fails, report the
+exact limitation; do not submit a replacement Hub job. Distinguish a reviewed
+preview from the full native scientific result.

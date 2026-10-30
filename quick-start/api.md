@@ -56,6 +56,10 @@ curl -X POST https://api.omtx.ai/v2/data-access/shards \
 | `POST /v2/diligence/gather` | Start a diligence gather job. |
 | `POST /v2/diligence/crawl` | Start a diligence crawl job. |
 | `POST /v2/diligence/deep-diligence` | Start a deep diligence job. |
-| `POST /v2/hub/<model>/start` | Start an active Hub model job. |
 | `GET /v2/jobs/{job_id}` | Read job status. |
 | `GET /v2/jobs/history` | Page through recent jobs. |
+
+For new scientific model execution, use
+[ZenCloud through Om MCP](../skills/om-discovery/SKILL.md#case-19--zencloud-scientific-sessions).
+Hub launch routes are retired; existing job status and authorized results use
+the job readers above. Do not submit or retry a Hub launch through an older client.

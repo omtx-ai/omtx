@@ -9,7 +9,9 @@ research and modeling tasks.
 
 - Data access: build training-ready binder/non-binder datasets.
 - Diligence: turn a question into a compact evidence briefing.
-- Hub: run artifact-backed modeling workflows and retrieve outputs.
+- ZenCloud: run new scientific models through the
+  [Om MCP playbook](../skills/om-discovery/SKILL.md#case-19--zencloud-scientific-sessions).
+- Historical Hub: retrieve authorized results from existing jobs.
 - Molecule fulfillment: fetch fixed-tier Om Accessible Space rows, score or
   select them with your own tools, and order selected molecules through Wallet
   Credits.
@@ -22,8 +24,8 @@ research and modeling tasks.
   training dataset.
 - `diligence-briefing.md`: submit a diligence query and turn the job result into
   a short briefing.
-- `hub-artifact-workflow.md`: upload a structure, launch a Hub job, and retrieve
-  output artifacts.
+- `hub-artifact-workflow.md`: retrieve a known authorized artifact from an
+  existing Hub job.
 - `molecule-accessible-space-to-order.md`: fetch Om Accessible Space molecules,
   score or filter them yourself, and place Wallet Credits-funded orders for
   selected Om rows.

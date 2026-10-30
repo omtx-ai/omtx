@@ -1,98 +1,37 @@
-# Hub Jobs And Artifacts
+# Historical Hub Jobs And Artifacts
 
-Hub workflows are asynchronous jobs. Some models accept sequence inputs, and
-others require an uploaded structure artifact first.
+Hub is retired for new execution. Use
+[ZenCloud scientific sessions](../skills/om-discovery/SKILL.md#case-19--zencloud-scientific-sessions)
+for new structure, docking, and design work. Describe the selected image and
+use its current parameters and registered file inputs; a Hub payload is not a
+ZenCloud request. Confirm the full reservation price and term before starting.
 
-## Active Public Models
+Older clients may still list Hub launch methods. Do not use them to create work
+or retry a historical job. The read-only `hub_models_catalog` provides migration
+guidance; it is not a launch path.
 
-The active Hub model set currently documented by the SDK is:
+## Inspect An Existing Job
 
-- `boltz2`
-- `boltzgen`
-- `rosettafold3`
-- `chai1`
-- `rfd3`
-- `bindcraft`
-- `alphafold`
-- `proteinttt`
-- `diffdock`
-- `flowdock`
-- `neuralplexer`
-- `openfold3`
+Keep the original job ID. Through Om MCP, use `jobs_status` for its state and
+useful inline results, `jobs_export_json` for its public export, and
+`jobs_get_artifact_url` or `jobs_download_artifact` for authorized files.
+`jobs_history` can help find an owned job.
 
-Use `client.hub.submit(job_type="hub.<model>", payload={...})` for full active
-model coverage. Typed helpers exist for common models and remain thin wrappers
-over the API routes.
+For an SDK workflow, `client.jobs.status(job_id)` reads an existing job. Retrieve
+an artifact using the exact public name from its result or a previously verified
+download record; do not invent a path from the model name. See
+[Historical Hub Artifact Retrieval](../cookbooks/hub-artifact-workflow.md).
 
-## Sequence Job
+A missing artifact listing alone does not prove that an authorized named
+download is unavailable. Report which status, export and exact named download
+paths were actually checked. If no public artifact name is known, preserve that
+limitation instead of guessing. A preview is not proof of a full native output.
 
-```python
-from omtx import OmClient
+## Continue With ZenCloud
 
-with OmClient() as client:
-    job = client.hub.submit(
-        job_type="hub.boltz2",
-        payload={
-            "protein_sequence": "MSTNPKPQRKTKRNTNRRPQDVKFPGG",
-            "ligand_smiles": "CCO",
-        },
-        idempotency_key="hub-boltz2-demo-001",
-    )
-
-    status = client.jobs.wait(job["job_id"], poll_interval=5, timeout=3600)
-    print(status["status"])
-```
-
-## Artifact Upload
-
-For artifact-backed jobs, upload the file first.
-
-```python
-from omtx import OmClient
-
-with OmClient() as client:
-    artifact = client.artifacts.upload("target.pdb")
-    print(artifact["artifact_id"])
-```
-
-For larger files, use the signed URL helper:
-
-```python
-artifact = client.artifacts.upload_via_signed_url("target.cif")
-```
-
-## Artifact-Backed Hub Job
-
-```python
-from omtx import OmClient
-
-with OmClient() as client:
-    artifact = client.artifacts.upload("target.pdb")
-
-    job = client.hub.diffdock(
-        protein_artifact_id=artifact["artifact_id"],
-        ligand_smiles="CCO",
-        idempotency_key="hub-diffdock-demo-001",
-    )
-
-    status = client.jobs.wait(job["job_id"], poll_interval=5, timeout=3600)
-    print(status["status"])
-```
-
-## Result Artifact URLs
-
-Use signed result URLs for large outputs instead of inlining artifact bytes.
-
-```python
-url_info = client.jobs.get_artifact_url(
-    job_id=job["job_id"],
-    artifact_name="outputs/results.json",
-)
-print(url_info["download_url"])
-```
-
-## CLI Option
-
-For command-line local scoring, see the
-[Local LULA-1 Quickstart](../quick-start/lula.md). For Hub jobs and artifacts,
-use the SDK flow above.
+Use the existing scientific results as inputs when appropriate. Do not repeat
+inference merely to repair a download or migrate a workflow. Inspect the live
+ZenCloud catalog for an available replacement. Former Hub BindCraft work uses
+the `bindcraft2` successor when available; other names still require a live
+catalog check. Historical Hub results retain their own access contract; do not
+apply a new ZenCloud session's retention deadline to them.

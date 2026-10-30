@@ -2,7 +2,7 @@
 name: om-discovery
 description: >
   Full playbook for hosted Om MCP. Highlight the live omtx.ai products: LULA
-  scoring, Discovery with AS-MS, Discovery Challenges, Hub, Diligence, Om
+  scoring, Discovery with AS-MS, Discovery Challenges, Diligence, Om
   Accessible Space, molecule ordering, and ZenCloud scientific sessions.
   Also covers Data Access, Wallet Credits, and quote-then-confirm rules.
   Adaptyv, A-Alpha Bio, and my genome are not ready; do not treat them as
@@ -15,7 +15,7 @@ description: >
 # Om Discovery
 
 This skill is the customer playbook for hosted Om MCP. Lead with the live
-omtx.ai products: **LULA**, **Discovery**, **Discovery Challenges**, **Hub**,
+omtx.ai products: **LULA**, **Discovery**, **Discovery Challenges**,
 **Diligence**, **Om Accessible Space**, **ordering molecules**, and
 **ZenCloud**. Do not invent prices, scores, binder labels, or order IDs.
 Call Om tools and report
@@ -31,7 +31,7 @@ Do not run them as a live product path:
 - my genome (`my_genome_*`)
 
 If the user asks for any of those, say they are coming soon. Offer a live
-omtx.ai path instead: LULA scoring, Discovery, Challenges, Hub, Diligence, or
+omtx.ai path instead: LULA scoring, Discovery, Challenges, Diligence, ZenCloud, or
 molecule orders.
 
 ## Connect
@@ -85,8 +85,7 @@ Keep these rules for every paid path:
 | Discovery | Same website program: LULA ranks space, Om runs AS-MS, data back in weeks | `discovery_checkout_quote`, `discovery_checkout_order`, `discovery_get` |
 | Discovery Challenges | Submit om_50 molecules for wet-lab validation / payout challenges | `discovery_challenges_list`, `discovery_challenge_validate`, `discovery_challenge_submit` |
 | Order molecules | Ship selected Om Accessible Space hits with Wallet Credits | `molecule_fulfillment_pricing`, `molecule_fulfillment_order` |
-| Hub | Structure, docking, design (Boltz-2 and other live models) | `hub_models_catalog`, then `hub_boltz2` / `hub_submit` |
-| ZenCloud | Reserve a fixed term for a cataloged scientific image, then run typed workloads | `zencloud_status` with `action=describe`; quote and confirm before `zencloud(action=start)` |
+| ZenCloud | Structure, docking, design and other typed scientific workloads on a cataloged image | `zencloud_status` with `action=describe`; quote and confirm before `zencloud(action=start)` |
 | Diligence | Target landscape with citations | `diligence_search`, then gather / deep only if needed |
 | Accessible Space | Fetch or export Om molecules without scoring | `molecule_accessible_space`, `molecule_accessible_space_export` |
 | Data Access | Account Generated Data binders / non-binders | `datasets_catalog`, `binders_get_ranked_molecules` |
@@ -101,7 +100,7 @@ After Hello World, unless the user names a later step:
 1. Score a protein with LULA against Om Accessible Space.
 2. Quote Discovery **or** quote molecule shipment. Wait for confirm.
 3. Diligence if they want target context.
-4. Hub if they want structure/docking/design on a hit.
+4. ZenCloud if they want structure, docking, or design on a hit (Cases 7 and 19).
 5. Discovery Challenges if they want to submit om_50 molecules to a live challenge.
 6. Data Access if they already have Generated Data.
 7. ZenCloud if they want a scientific session: describe, quote, and confirm
@@ -126,7 +125,7 @@ and list the highest-value things I can do next.
 
 **Do this:** Call those three. Then highlight the live omtx.ai next steps:
 score a protein with LULA, quote Discovery, order molecules, Discovery
-Challenges, Hub, Diligence, or describe available ZenCloud images. Do not
+Challenges, Diligence, or describe available ZenCloud images. Do not
 launch scoring, orders, or reservations yet. Do not offer Adaptyv, A-Alpha
 Bio, or my genome.
 
@@ -300,26 +299,37 @@ they are not the starting point for a new checkout review.
 
 ---
 
-## Case 7 — Launch Hub jobs
+## Case 7 — Structure, docking, or design with ZenCloud
 
-Structure, docking, or design in the same session.
+Hub is retired for new work. Use ZenCloud for new model execution, including
+when an older client still advertises Hub launch tools. Do not submit new
+`hub_*` work or retry an old Hub job to create a replacement attempt.
+`hub_models_catalog` is retained only for read-only migration guidance.
 
 **You say**
 
 ```text
-Show active Hub models. Then launch Boltz-2 on this protein-ligand pair
-and wait until the job finishes. Return artifacts when ready.
+Describe the available ZenCloud images for this protein-ligand pair.
+If Boltz-2 is available, inspect its input schema and quote a reservation.
+Wait for my confirmation of the full Wallet Credits total and term before
+reserving, then run the prediction and inspect the returned results.
 ```
 
-**Tools:** `hub_models_catalog`, `hub_tool_schema` if inputs are unclear,
-then the named model (`hub_boltz2`, `hub_boltzgen`, `hub_chai1`,
-`hub_openfold3`, `hub_diffdock`, `hub_alphafold`, `hub_bindcraft`,
-`hub_flowdock`, `hub_nesso1`, `hub_neuralplexer`, `hub_rfd3`,
-`hub_rosettafold3`) or `hub_submit`. Then `jobs_wait`,
-`jobs_get_artifact_url` / `jobs_download_artifact`.
+**Tools:** `zencloud_status`, `zencloud`, and `artifacts_upload_bytes` when
+the selected image requires files. Follow the complete workflow in Case 19.
 
-**Do this:** Catalog first. Launch only the model they chose. Wait. Return
-artifact URLs. Upload Hub inputs with `artifacts_upload_bytes` when needed.
+**Do this:** Describe the catalog, then the selected image. Obtain its current
+applications, parameters and file contract; do not reuse a Hub request body.
+For former Hub BindCraft work, inspect the ZenCloud `bindcraft2` image and its
+linked guidance. A former Hub model name does not prove a ZenCloud image is
+available. If it is absent, report that limitation without falling back to Hub.
+
+For an existing Hub job, retain its job ID and use the historical status,
+export and authorized artifact readers in Case 14. Preserve the original
+scientific results and their limitations; retirement does not require rerunning
+them. Use exact known public artifact names. A missing artifact list alone does
+not prove that an authorized named download is unavailable, and a preview does
+not establish delivery of the full native result.
 
 ---
 
@@ -428,7 +438,7 @@ If the user asks for Adaptyv, A-Alpha Bio, or my genome:
 
 - Say that product is not ready yet / coming soon.
 - Do not call `adaptyv_*`, `aalphabio_*`, or `my_genome_*`.
-- Offer a live omtx.ai path: LULA, Discovery, Challenges, Hub, Diligence, or
+- Offer a live omtx.ai path: LULA, Discovery, Challenges, Diligence, ZenCloud, or
   molecule orders.
 
 ---
@@ -474,7 +484,7 @@ physical molecules.
 
 ```text
 Upload this file to Om artifacts and then use it as the input to the next
-Hub workflow.
+ZenCloud workflow, following the selected image’s file-input contract.
 ```
 
 ```text
@@ -578,7 +588,8 @@ Typical customer loop in one chat:
 1. Hello World.
 2. Diligence on the target if they want context.
 3. Score the protein (Case 1).
-4. Optional residue map and Hub Boltz-2 on the top hit (Cases 1 and 7).
+4. Optional residue map and a quoted ZenCloud prediction on the top hit
+   (Cases 1, 7 and 19).
 5. Quote Discovery **or** quote molecule shipment (Cases 6 or 4).
 6. Wait for confirm. Then order.
 7. Optional Data Access later if Generated Data exists (Case 9).
