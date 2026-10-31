@@ -73,6 +73,9 @@ Keep these rules for every paid path:
   user confirmed the quoted total (and shipping address when shipping).
 - Physical molecule orders are separate from Discovery validation data.
 - Do not invent LULA scores, prices, or binder/non-binder labels.
+- A LULA score ranks molecules within one protein's run only. Never compare
+  score values between proteins or runs, and never read one as a probability
+  of binding. Report ranks, not score values.
 - Do not call `wallet_topup` unless the user confirmed the **exact** amount and
   payment mode (saved card vs invoice).
 - Prefer LULA-2 for hosted scoring unless the user asks for LULA-1.
@@ -160,8 +163,9 @@ Also map hotspot residues for the top hit with lula2_residue_map.
    asked, or after returning ranked hits.
 5. Nothing is ordered yet.
 
-**Reply shape:** Ranked hits from the job. Hotspot residues if mapped. Offer
-quote-to-order or Discovery next.
+**Reply shape:** Ranked hits from the job, reported as ranks rather than score
+values — a score only orders molecules within this protein. Hotspot residues if
+mapped. Offer quote-to-order or Discovery next.
 
 ---
 

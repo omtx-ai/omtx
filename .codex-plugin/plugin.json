@@ -1,6 +1,6 @@
 {
   "name": "om-discovery",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Hosted Om MCP plus the Om Discovery playbook for LULA, Discovery, Discovery Challenges, Diligence, Accessible Space, molecule orders, and ZenCloud scientific sessions.",
   "author": {
     "name": "Om Therapeutics",
