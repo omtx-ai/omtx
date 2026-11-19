@@ -76,8 +76,11 @@ Keep these rules for every paid path:
 - A LULA score ranks molecules within one protein's run only. Never compare
   score values between proteins or runs, and never read one as a probability
   of binding. Report ranks, not score values.
-- Do not call `wallet_topup` unless the user confirmed the **exact** amount and
-  payment mode (saved card vs invoice).
+- Add Wallet Credits only with Pay now (`wallet_pay_now_link`) or Pay later
+  (`wallet_pay_later_invoice`), after the user's exact approval sentence.
+  Follow Case 16 for amounts, purchaser details, quotes and retries.
+- A link or invoice is not payment. Credits arrive only after payment clears;
+  confirm with `credits_get` before saying credits were added.
 - Prefer LULA-2 for hosted scoring unless the user asks for LULA-1.
 
 ## Core omtx.ai products — highlight these
@@ -92,7 +95,7 @@ Keep these rules for every paid path:
 | Diligence | Target landscape with citations | `diligence_search`, then gather / deep only if needed |
 | Accessible Space | Fetch or export Om molecules without scoring | `molecule_accessible_space`, `molecule_accessible_space_export` |
 | Data Access | Account Generated Data binders / non-binders | `datasets_catalog`, `binders_get_ranked_molecules` |
-| Wallet | Credits balance and funding | `credits_get`, `pricing_get`, `wallet_topup` only after exact amount |
+| Wallet | Credits balance, Pay now and Pay later | `credits_get`, `pricing_get`; `wallet_pay_now_link` or `wallet_pay_later_invoice` after exact approval; `wallet_quote` only if purchasing needs a quote for a PO |
 
 Also live, supporting those products: fine-tune LULA, molecule search/quote, assay fulfillment, artifacts/jobs, vibe video, evidence lookups.
 
@@ -554,19 +557,54 @@ This creates a reviewed media request, not a guaranteed instant video.
 
 ---
 
-## Case 16 — Wallet Credits top-up
+## Case 16 — Add Wallet Credits
 
 **You say**
 
 ```text
-Check my Wallet Credits. If I need more, ask me before adding credits
-by saved card or invoice.
+Check my Wallet Credits. If I need more, show me Pay now and Pay later,
+and ask me before creating a link or invoice.
 ```
 
-**Tools:** `credits_get`, `pricing_get`, `wallet_topup`, `users_profile`
+```text
+My purchasing office needs a quote for $1,000 of Wallet Credits before
+they can issue a PO. Make the quote, then ask me before creating the invoice.
+```
 
-**Do this:** Show the live balance. Call `wallet_topup` only after they
-confirm the exact amount and payment mode. Never guess an amount.
+**Tools:** `credits_get`, `pricing_get`, `wallet_quote`, `wallet_pay_now_link`,
+`wallet_pay_later_invoice`, `users_profile`
+
+**Do this:**
+
+- Show the live balance. Amounts are US dollars, and 1 Wallet Credit = $0.01.
+  Never guess an amount.
+- Pay now is a checkout link the user pays in their own browser. It has a
+  per-payment card limit; above it, use Pay later. Do not suggest forwarding
+  the link. If someone else will pay, use Pay later.
+- Pay later is a bank-transfer invoice in $500 steps, with an optional PO. Ask
+  for the purchaser's institution, billing email and address. Never invent
+  them or use the signed-in user instead. Credits still go to the signed-in
+  Om account. Om emails the invoice to the account's own address, so give the
+  user the returned invoice link for their accounts payable team.
+- Make a quote only if purchasing needs one before a PO. `wallet_quote` creates
+  no invoice or payment and returns a PDF file: save it for the user and never
+  paste it into chat. If it cannot be saved here, the user can download it on
+  omtx.ai: Billing & Plans, Add Wallet Credits, then Pay later. Use the same
+  purchaser on the invoice later.
+- Make one invoice per purchase. Before creating it, ask whether an invoice was
+  already made on omtx.ai or the PO was emailed to finance@omtx.ai. If so, do
+  not create another. A PO that arrives after the invoice goes to
+  finance@omtx.ai.
+- Show the amount (and for Pay later the purchaser and PO), then wait for the
+  user's exact sentence. A general yes is not enough, and a changed amount
+  needs a new sentence. Examples:
+  `I approve creating a $500.00 Wallet Credits checkout link.`
+  `I approve creating a $6,250.00 Wallet Credits invoice.`
+- Give each request its own `idempotency_key`, and reuse it only to retry that
+  same unchanged request. The invoice after a quote is a new request.
+- Credits appear only after payment clears; bank transfers can take days.
+  Check with `credits_get`. `wallet_topup_status` only reads older saved-card
+  top-ups, not Pay now links or Pay later invoices.
 
 ---
 
@@ -706,3 +744,7 @@ scientific limitations. Do not infer successful science from an accepted run.
   appears, cancel instead of approving.
 - Confirm the URL is exactly `https://agents.omtx.ai/mcp`.
 - Use the same email on Om that they authorized in the browser.
+- If the Wallet payment tools (`wallet_quote`, `wallet_pay_now_link`,
+  `wallet_pay_later_invoice`) are still missing after one reconnect, the user
+  can add credits on omtx.ai: Billing & Plans in the account menu, then Add
+  Wallet Credits.
