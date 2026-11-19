@@ -744,8 +744,7 @@ scientific limitations. Do not infer successful science from an accepted run.
   appears, cancel instead of approving.
 - Confirm the URL is exactly `https://agents.omtx.ai/mcp`.
 - Use the same email on Om that they authorized in the browser.
-- The Wallet payment tools (`wallet_quote`, `wallet_pay_now_link`,
-  `wallet_pay_later_invoice`) are not offered in the ChatGPT, claude.ai or
-  claude.com apps. If they are still missing after one reconnect, the user can
-  add credits on omtx.ai: Billing & Plans in the account menu, then Add Wallet
-  Credits.
+- If the Wallet payment tools (`wallet_quote`, `wallet_pay_now_link`,
+  `wallet_pay_later_invoice`) are still missing after one reconnect, the user
+  can add credits on omtx.ai: Billing & Plans in the account menu, then Add
+  Wallet Credits.
