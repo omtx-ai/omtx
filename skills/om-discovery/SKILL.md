@@ -581,11 +581,11 @@ they can issue a PO. Make the quote, then ask me before creating the invoice.
 - Pay now is a checkout link the user pays in their own browser. It has a
   per-payment card limit; above it, use Pay later. Do not suggest forwarding
   the link. If someone else will pay, use Pay later.
-- Pay later is a bank-transfer invoice in $500 steps, with an optional PO. Ask
-  for the purchaser's institution, billing email and address. Never invent
-  them or use the signed-in user instead. Credits still go to the signed-in
-  Om account. Om emails the invoice to the account's own address, so give the
-  user the returned invoice link for their accounts payable team.
+- Pay later is a bank-transfer invoice for any amount from $1.00, with an
+  optional PO. Ask for the purchaser's institution, billing email and address.
+  Never invent them or use the signed-in user instead. Credits still go to the
+  signed-in Om account. Om emails the invoice to the account's own address, so
+  give the user the returned invoice link for their accounts payable team.
 - Make a quote only if purchasing needs one before a PO. `wallet_quote` creates
   no invoice or payment and returns a PDF file: save it for the user and never
   paste it into chat. If it cannot be saved here, the user can download it on
