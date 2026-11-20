@@ -166,6 +166,14 @@ Also map hotspot residues for the top hit with lula2_residue_map.
    asked, or after returning ranked hits.
 5. Nothing is ordered yet.
 
+For a customer's own molecule list, use `source=uploaded_smiles` and the
+uploaded `smiles_artifact_id`. Write UTF-8 text with one SMILES per data
+line in a `.smi`, `.smiles`, or `.txt` file. If the input is a CSV, export
+its SMILES column without the header. Blank lines and full-line comments
+beginning with `#` are skipped. Set `n` to the number of data lines. Keep
+the caller's IDs in that order and join results by the zero-based
+`input_index` and input artifact identity. Ranked output can reorder rows.
+
 **Reply shape:** Ranked hits from the job, reported as ranks rather than score
 values — a score only orders molecules within this protein. Hotspot residues if
 mapped. Offer quote-to-order or Discovery next.
@@ -254,9 +262,15 @@ Accessible Space with that derived model.
 `finetuned_derived_models_list`, `finetuned_derived_models_get`,
 `lula2_score` with `derived_model_id`
 
-**Do this:** Fine-tune on `csv_artifact_id`, wait until the derived checkpoint
-is ready, rescore the same protein with `derived_model_id`. That rescore uses
-their labels instead of base LULA weights.
+Use a labeled UTF-8 CSV with columns `target_id,protein_sequence,smiles,label`.
+For the default `train_test` mode include `split` with `train` or `test` on
+each row. For `train_all` the split column is optional. Use both binder and
+nonbinder examples and set `training_pair_count` to the data-row count.
+Read the selected fine-tune endpoint's rate and minimum from `pricing_get`,
+calculate the Wallet Credits for that count, and show the total for approval
+before calling the fine-tune tool. Launching can reserve credits immediately.
+After approval submit `csv_artifact_id`, wait for the derived checkpoint to
+be ready, and rescore with its `derived_model_id`.
 
 ---
 
