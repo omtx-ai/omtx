@@ -1,77 +1,92 @@
 # Merging top hits across a multi-job LULA-2 batch
 
-A LULA-2 scoring request that exceeds one shard's molecule capacity does not
-come back as a single job. The gateway fans it out into many independent
-jobs that share one batch identity. Every per-job tool — `jobs_status`,
-`jobs_get_top_scored_molecules`, `jobs_export_json` — is scoped to exactly
-one job_id. None of them verify sibling completion or compute a batch-wide
-winner; `jobs_get_top_scored_molecules`'s own description says so directly.
+For a batch-wide top N, use the completed jobs' existing ranked results and
+keep a running top N. Do not make rescoring, full-catalog identity reconciliation,
+or chemical pool design prerequisites for a request for ranked hits.
 
-Note: the batch ID is **not** available on `/v2/jobs/history` — `metadata`
-there only carries artifact listings. It is returned once, in the original
-launch response, and separately recorded on each shard's own
-`scored_shards_manifest.json` (see below) — that manifest is the reliable
-way to recover batch membership after the fact.
+`jobs_get_top_scored_molecules` ranks one `job_id`; it does not combine sibling
+jobs. The batch workflow combines those per-job results programmatically.
+For large batches, keep the rows outside the conversation and return a bounded
+summary plus a ranked artifact. Use approved cloud compute for bulk data when
+the workspace requires it; do not relay bulk results through the workstation.
 
-If you need "the top hit" (or a ranked export) for a batch like that, do not
-call a ranking tool once per job_id inside this conversation. With dozens or
-hundreds of shard jobs that is dozens or hundreds of tool round-trips, each
-one dumping its full response into the conversation — this is the exact
-failure mode that has crashed agent sessions doing this by hand.
+## Recover the batch and check coverage
 
-## Why the merge is cheap even though the batch is large
+Reuse the original launch response or saved job manifest when available. A
+fan-out batch has independent jobs with one batch identity. The published
+`accessible_space/scored_shards_manifest.json` records `batch_id`, `job_index`,
+`job_count`, and `total_molecules`; history metadata alone is not a reliable
+membership source.
 
-Every completed shard job already writes a small, pre-ranked
-`accessible_space/top_hits.parquet` — its own locally-ranked retained hits,
-already sorted by score — alongside the much larger raw
-`accessible_space/scored_shards/*.parquet` score table. Merging a batch's
-top hits means downloading the small, already-sorted file from each shard
-and doing one final sort. Nothing needs to be re-ranked from scratch.
+Before calling the result complete, account for every expected job index,
+confirm success, and verify that the jobs are comparable slices of the same
+protein/model run with consistent score semantics. Do not merge unrelated
+targets, checkpoints, or runs merely because their outputs have a `score` column.
+Report missing, failed, or unreadable jobs as incomplete coverage.
 
-## Run it as a script, not as tool calls in chat
+## Keep a running top N
 
-Use [`examples/python/lula_batch_top_hits.py`](../../../examples/python/lula_batch_top_hits.py).
-It requires `pip install omtx polars requests` and `OMTX_API_KEY` set to the batch
-owner's own key (never a different account's key — the script, like every
-job tool, can only see jobs the key's account owns).
+1. Get each job's highest N valid rows, or all its valid rows if it has fewer
+   than N. Prefer the already-published `accessible_space/top_hits.parquet`
+   when its retention is sufficient. Om MCP supplies job metadata and signed
+   artifact links; the same owner's SDK can retrieve those artifacts too.
+2. Merge that candidate set with the running best set, sort by full-precision
+   score descending and a consistent deterministic tie-break, and keep N rows.
+3. Repeat for every job. Save the ranked result with source job and molecule
+   identity, catalog/order metadata, and the completed-job denominator.
+
+This is the same ranking as sorting the complete union: a row below rank N
+in its own job already has N rows ahead of it and cannot enter the global top N.
+The running set needs only N rows; no full score-matrix download is necessary
+when the retained candidates are sufficient. Exclude missing/non-finite scores
+and report their counts. Define whether N means rows or unique molecules;
+deduplication must precede the relevant truncation when unique molecules are
+requested, or deeper candidates may be needed.
+
+`top_n` sets the per-job ranking size. `return_rows_limit` only caps the inline
+preview; it does not change that ranking size or provide pagination. A small
+preview or a score cutoff is not the complete candidate set for the merge.
+Prefer published files for bulk results, rather than placing thousands of rows
+from every job into the chat.
+
+## Existing SDK helper
+
+Use [`examples/python/lula_batch_top_hits.py`](../../../../examples/python/lula_batch_top_hits.py)
+with `omtx`, `polars`, and `requests` installed. It uses the batch owner's own
+`OMTX_API_KEY`; never substitute an administrator's or another account's key.
+MCP access uses the existing OAuth connection and does not require replacing
+it with an API key.
 
 ```bash
-export OMTX_API_KEY="your-api-key"
-python examples/python/lula_batch_top_hits.py --batch-id <batch_id> --top-n 50
+python examples/python/lula_batch_top_hits.py --batch-id <batch_id> --top-n 10000
 ```
 
-If the `batch_id` is not known, omit `--batch-id` and the script lists the
-distinct batch IDs found in recent job history (with job count, status
-breakdown, and a human-readable label) to pick from.
+Replace `<batch_id>` with the original launch response's batch ID. Omitting it
+lists batches discovered from recent job history and their published manifests.
+Use the SDK's configured endpoint for the batch's environment.
 
-The script:
+The current helper discovers jobs, reports completion/retention gaps, fetches
+their retained top-hit files, concatenates and sorts them, and writes a top-N
+CSV. That produces the same ranking as the rolling merge but retains all
+candidate frames in memory; do not describe it as a bounded-memory implementation.
+Report its summary and output path, not its raw per-job responses.
 
-1. Pages `jobs.history()` for LULA-2 jobs, then fetches each one's small
-   `scored_shards_manifest.json` (concurrently) to read its `batch_id`,
-   `job_index`, `job_count` and `total_molecules` — `/v2/jobs/history`'s own
-   `metadata` does not carry a batch_id.
-2. Compares the jobs found for the target `batch_id` against that batch's
-   own recorded `job_count` and warns explicitly if the batch looks
-   incomplete (fewer jobs found than expected), rather than silently merging
-   a partial batch.
-3. Filters to jobs whose status is `succeeded`.
-4. Downloads every succeeded shard's `top_hits.parquet` concurrently via
-   `jobs.get_artifact_url()`, and flattens the `source_metadata` struct
-   column (CSV cannot hold nested data) before writing it out.
-5. Concatenates, re-sorts locally, and writes one merged top-N CSV.
+## When the retained files are insufficient
 
-Report back to the user only the printed summary (shards merged, candidate
-rows, top score, output file path) — not the raw per-shard tool responses
-that produced it.
+Retention is set by the scoring request's `threshold` and `top_k`. A sufficient
+condition for an exact top N is that every job retained at least
+`min(N, that job's valid scored-row count)` highest rows, with compatible
+tie-breaking. A small final shard containing fewer than N total valid rows is
+complete if all of them are present. Check actual retention and coverage before
+claiming an exact global ranking; a helper warning is not a completion proof.
 
-## Known limitation — read before calling a merged top-N "the" global winner
+If retention is insufficient, retrieve deeper ranked results or the existing
+full-score artifacts only for the affected jobs through the authorized path.
+Do not silently certify the retained subset or launch new scoring.
 
-Each shard's `top_hits.parquet` only contains that shard's retained
-fraction, set at launch by `threshold` (default 0.3 = top 30% of that shard)
-and capped by `top_k`. `lula2_score`'s own description warns that "a
-retained-file merge may omit global winners." This merge is exact only if
-every shard retained at least as many rows as the top-N you asked for. The
-script reports each shard's retained row count and warns explicitly when any
-shard retained fewer rows than the requested `--top-n` — read that warning
-before presenting a merged result as a certified global ranking rather than
-a best-effort one.
+For a constrained selection (supplier eligibility, previous-screen exclusions,
+diversity, or AS-MS mass separation), a raw top N may not contain enough eligible
+or compatible compounds. Apply row-level eligibility before truncating where
+supported, or expand candidates until the requested selection has adequate
+coverage. Pool admission and its validation are subsequent work; do not call a
+top-hit export an exhaustive whole-catalog or validated pool analysis.
